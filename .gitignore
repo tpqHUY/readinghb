@@ -1,6 +1,9 @@
 # Claude Code local config & memory (not part of the website)
 .claude/
 
+# original full-size logo source (optimized copies live in assets/)
+Gemini_Generated_Image_*.png
+
 # OS / editor junk
 Thumbs.db
 .DS_Store

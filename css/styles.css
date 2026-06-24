@@ -294,6 +294,150 @@ body[data-mode="writing"] .brand strong { color: #0f5c57; }
   .blueprint .bp-part { position: static; width: auto; display: block; margin-bottom: 0.2rem; }
 }
 
+/* ---------- Writing: annotated model answers ---------- */
+.model-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.1rem;
+  margin-bottom: 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+}
+.model-legend .leg-l { margin-left: -0.7rem; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: #fff;
+  padding: 0.16em 0.45em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.tag-TR { background: var(--accent); }
+.tag-CC { background: #2e7d9a; }
+.tag-LR { background: #b5862f; }
+.tag-GRA { background: #8a4b7a; }
+
+.model {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.6rem;
+  overflow: hidden;
+}
+.model-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.4rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--hair);
+}
+.model-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.model-band {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 100px;
+  padding: 0.18em 0.6em;
+}
+.model-prompt {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--text-soft);
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px dashed var(--hair-strong);
+  background: var(--ground);
+}
+.model-body {
+  padding: 1.3rem clamp(1.1rem, 3vw, 1.8rem);
+  font-family: var(--serif);
+  font-size: 1.06rem;
+  line-height: 1.75;
+}
+.model-body p { margin: 0 0 1rem; }
+.model-body p:last-child { margin-bottom: 0; }
+
+.anno {
+  background: var(--accent-soft);
+  border-bottom: 1px dashed var(--accent);
+  border-radius: 2px;
+  padding: 0.02em 0.1em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.anno sup {
+  font-family: var(--mono);
+  font-size: 0.58em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-left: 1px;
+}
+.anno.active { background: var(--accent); color: #fff; border-bottom-color: var(--accent); }
+.anno.active sup { color: #fff; }
+
+.model-notes {
+  border-top: 1px solid var(--hair);
+  background: var(--surface-2);
+  padding: 1.1rem clamp(1.1rem, 3vw, 1.8rem) 1.3rem;
+}
+.model-notes-title {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 0.8rem;
+}
+.model-notes ol { list-style: none; margin: 0; padding: 0; counter-reset: mn; }
+.note {
+  display: grid;
+  grid-template-columns: 1.6rem auto 1fr;
+  gap: 0.5rem 0.7rem;
+  align-items: baseline;
+  padding: 0.5rem 0.5rem;
+  border-radius: 5px;
+  counter-increment: mn;
+  transition: background 0.15s;
+}
+.note::before {
+  content: counter(mn);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+.note .tag { align-self: center; }
+.note-t { font-size: 0.95rem; color: var(--text-soft); line-height: 1.5; }
+.note.active { background: var(--accent-soft); }
+.note.active .note-t { color: var(--text); }
+.note.pulse { animation: note-pulse 1.2s ease; }
+@keyframes note-pulse {
+  0%, 100% { background: var(--accent-soft); }
+  30% { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+}
+@media (prefers-reduced-motion: reduce) { .note.pulse { animation: none; } .anno { transition: none; } }
+
+@media (min-width: 880px) {
+  .model-body-wrap { display: grid; grid-template-columns: 1fr; }
+}
+
 /* ============================================================
    Layout shell
    ============================================================ */

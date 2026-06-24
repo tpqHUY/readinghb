@@ -370,6 +370,64 @@
     apply();
   })();
 
+  /* ---------- annotated band-8 model answers ---------- */
+  (function models() {
+    const grid = $("#wModelsContainer");
+    if (!grid || !window.WMODELS) return;
+    function critKey(c) { return c === "TA" ? "TR" : c; }
+    function annoParse(s) {
+      return s.replace(/\[\[(\d+)\|([^\]]+)\]\]/g, function (_, n, txt) {
+        return '<span class="anno" data-n="' + n + '" tabindex="0">' + txt + "<sup>" + n + "</sup></span>";
+      });
+    }
+    grid.innerHTML = WMODELS.map(function (m) {
+      return (
+        '<article class="model" id="model-' + m.id + '">' +
+          '<div class="model-head"><span class="model-tag">' + m.task + " · " + m.type + '</span><span class="model-band">' + m.band + "</span></div>" +
+          '<div class="model-prompt">' + m.prompt + "</div>" +
+          '<div class="model-body">' + m.paras.map(function (p) { return "<p>" + annoParse(p) + "</p>"; }).join("") + "</div>" +
+          '<div class="model-notes"><p class="model-notes-title">What lifts it to band 8</p><ol>' +
+            m.notes.map(function (nt, i) {
+              return '<li class="note" data-n="' + (i + 1) + '"><span class="tag tag-' + critKey(nt.crit) + '">' + nt.crit + '</span><span class="note-t">' + nt.t + "</span></li>";
+            }).join("") +
+          "</ol></div>" +
+        "</article>"
+      );
+    }).join("");
+
+    const leg = $("#modelLegend");
+    if (leg) {
+      leg.innerHTML = [["TR", "Task response"], ["CC", "Coherence"], ["LR", "Lexis"], ["GRA", "Grammar"]]
+        .map(function (c) { return '<span class="tag tag-' + c[0] + '">' + c[0] + '</span><span class="leg-l">' + c[1] + "</span>"; }).join("");
+    }
+
+    function setActive(model, n, on) {
+      if (!model) return;
+      $$('[data-n="' + n + '"]', model).forEach(function (el) { el.classList.toggle("active", on); });
+    }
+    function hoverHandler(on) {
+      return function (e) {
+        const el = e.target.closest("[data-n]");
+        if (el) setActive(el.closest(".model"), el.getAttribute("data-n"), on);
+      };
+    }
+    grid.addEventListener("mouseover", hoverHandler(true));
+    grid.addEventListener("mouseout", hoverHandler(false));
+    grid.addEventListener("focusin", hoverHandler(true));
+    grid.addEventListener("focusout", hoverHandler(false));
+    grid.addEventListener("click", function (e) {
+      const a = e.target.closest(".anno");
+      if (!a) return;
+      const model = a.closest(".model");
+      const note = model.querySelector('.note[data-n="' + a.getAttribute("data-n") + '"]');
+      if (note) {
+        note.scrollIntoView({ block: "center", behavior: "smooth" });
+        note.classList.add("pulse");
+        setTimeout(function () { note.classList.remove("pulse"); }, 1200);
+      }
+    });
+  })();
+
   /* ---------- Reading / Writing mode switch ---------- */
   (function modeSwitch() {
     const btns = $$(".mode-btn");

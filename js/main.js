@@ -123,7 +123,7 @@
           '<div class="vwords">' +
             v.words.map(chip).join("") +
           "</div>" +
-          '<p class="vnote">' + v.note + "</p>" +
+          (v.note ? '<p class="vnote">' + v.note + "</p>" : "") +
         "</div>"
       );
     }).join("");

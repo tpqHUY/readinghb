@@ -3622,6 +3622,567 @@ const VOCAB = [
     "x": "Prevention proved more cost-effective than later treatment."
    }
   ]
+ },
+ {
+  "g": "Idea / concept",
+  "sense": "an idea, assumption or mental construct",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "notion",
+    "d": "a general idea, belief or understanding of something",
+    "x": "The popular notion that we use only ten percent of our brains is false."
+   },
+   {
+    "w": "premise",
+    "d": "a statement assumed true and used as a basis for argument",
+    "x": "The whole argument rests on the premise that resources are unlimited."
+   },
+   {
+    "w": "abstraction",
+    "d": "a general idea formed apart from specific concrete examples",
+    "x": "Justice is an abstraction that different cultures interpret in very different ways."
+   },
+   {
+    "w": "conjecture",
+    "d": "an opinion or idea based on incomplete evidence; a guess",
+    "x": "His explanation of the ruins remained pure conjecture without supporting archaeological data."
+   }
+  ]
+ },
+ {
+  "g": "Theory / framework",
+  "sense": "structures for explaining or organising ideas",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "framework",
+    "d": "a basic structure of ideas used to organise or analyse",
+    "x": "Researchers proposed a new framework for understanding how languages change over time."
+   },
+   {
+    "w": "model",
+    "d": "a simplified description used to explain or predict something",
+    "x": "The climate model predicts a steady rise in average ocean temperatures."
+   },
+   {
+    "w": "hypothesis",
+    "d": "a proposed explanation offered for testing through investigation",
+    "x": "The scientists designed an experiment to test their hypothesis about plant growth."
+   },
+   {
+    "w": "schema",
+    "d": "a mental structure that organises knowledge into patterns",
+    "x": "Children build a schema of how the world works through repeated experience."
+   },
+   {
+    "w": "thesis",
+    "d": "a central claim or argument put forward and defended",
+    "x": "The author's main thesis is that trade shaped early urban civilisations."
+   },
+   {
+    "w": "doctrine",
+    "d": "a set of principles or beliefs taught by a group",
+    "x": "Economic doctrine of that era held that free markets always self-correct."
+   },
+   {
+    "w": "postulate",
+    "d": "a principle assumed true as a basis for reasoning",
+    "x": "Geometry begins from a few simple postulates accepted without proof."
+   }
+  ]
+ },
+ {
+  "g": "Method / approach",
+  "sense": "a way of doing or investigating something",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "method",
+    "d": "an organised way of doing or investigating something",
+    "x": "The study used a quantitative method to measure changes in attitude."
+   },
+   {
+    "w": "approach",
+    "d": "a particular way of dealing with a task or problem",
+    "x": "A more flexible approach to teaching improved students' overall engagement."
+   },
+   {
+    "w": "technique",
+    "d": "a practical skilled way of carrying out a task",
+    "x": "Archaeologists used a careful excavation technique to protect fragile artefacts."
+   },
+   {
+    "w": "means",
+    "d": "a method or way of achieving a particular result",
+    "x": "Migration became the main means by which the species spread across continents."
+   },
+   {
+    "w": "mechanism",
+    "d": "a process or system by which something is done",
+    "x": "Scientists are still studying the mechanism that triggers cell repair."
+   },
+   {
+    "w": "methodology",
+    "d": "the set of methods and principles used in research",
+    "x": "Critics questioned the methodology behind the survey's surprisingly strong conclusions."
+   },
+   {
+    "w": "protocol",
+    "d": "a fixed set of rules guiding how something is done",
+    "x": "All participants followed the same testing protocol to ensure reliable results."
+   }
+  ]
+ },
+ {
+  "g": "Component / element",
+  "sense": "a part of a larger whole",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "element",
+    "d": "one essential part of a larger whole",
+    "x": "Trust is a key element in any successful working relationship."
+   },
+   {
+    "w": "aspect",
+    "d": "one particular part or feature of something",
+    "x": "The report examines every aspect of urban transport, from cost to safety."
+   },
+   {
+    "w": "dimension",
+    "d": "a particular part or measurable feature of a complex thing",
+    "x": "Poverty has an economic dimension as well as a social one."
+   },
+   {
+    "w": "facet",
+    "d": "one of many sides or aspects of something",
+    "x": "The museum explores every facet of daily life in ancient Rome."
+   },
+   {
+    "w": "ingredient",
+    "d": "one part that combines with others to form a whole",
+    "x": "Strong leadership is a vital ingredient in lasting social reform."
+   },
+   {
+    "w": "segment",
+    "d": "one distinct part into which something is divided",
+    "x": "The wealthiest segment of the population owns most of the land."
+   }
+  ]
+ },
+ {
+  "g": "Establish / verify",
+  "sense": "to confirm something is true or set it firmly",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "verify",
+    "d": "to check or prove that something is true",
+    "x": "Researchers repeated the experiment to verify their earlier findings."
+   },
+   {
+    "w": "validate",
+    "d": "to confirm that something is accurate or well founded",
+    "x": "Independent tests were needed to validate the company's safety claims."
+   },
+   {
+    "w": "authenticate",
+    "d": "to prove that something is genuine or real",
+    "x": "Experts used chemical analysis to authenticate the ancient manuscript."
+   },
+   {
+    "w": "vindicate",
+    "d": "to prove that a claim or person was right",
+    "x": "Later evidence vindicated the theory that critics had once dismissed."
+   },
+   {
+    "w": "affirm",
+    "d": "to state firmly that something is true",
+    "x": "The new data affirm the link between exercise and improved memory."
+   }
+  ]
+ },
+ {
+  "g": "Derive / obtain",
+  "sense": "to get or draw something from a source",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "derive",
+    "d": "to obtain or get something from a source",
+    "x": "Many modern drugs are derived from compounds found in plants."
+   },
+   {
+    "w": "obtain",
+    "d": "to get or acquire something, often with effort",
+    "x": "Researchers obtained funding to extend the study by two years."
+   },
+   {
+    "w": "glean",
+    "d": "to gather information slowly and in small amounts",
+    "x": "Historians glean details of daily life from old letters and receipts."
+   },
+   {
+    "w": "attain",
+    "d": "to reach or achieve something through effort",
+    "x": "Few students attain such a high level of fluency in two years."
+   },
+   {
+    "w": "procure",
+    "d": "to obtain something, especially with difficulty",
+    "x": "The expedition struggled to procure enough fresh water for the journey."
+   }
+  ]
+ },
+ {
+  "g": "Underlying / inherent",
+  "sense": "existing as a basic, built-in part",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "inherent",
+    "d": "existing as a natural, permanent part of something",
+    "x": "There is an inherent risk in relying on a single data source."
+   },
+   {
+    "w": "innate",
+    "d": "present from birth rather than learned",
+    "x": "Some researchers argue that the ability for language is innate."
+   },
+   {
+    "w": "latent",
+    "d": "present but hidden and not yet active or visible",
+    "x": "The virus can remain latent in the body for many years."
+   },
+   {
+    "w": "ingrained",
+    "d": "firmly fixed and very hard to change",
+    "x": "Deeply ingrained habits often resist even the strongest official campaigns."
+   }
+  ]
+ },
+ {
+  "g": "Coherent / valid",
+  "sense": "logically sound and convincing",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "valid",
+    "d": "based on sound reasoning and therefore acceptable",
+    "x": "The reviewers agreed that her objections to the study were valid."
+   },
+   {
+    "w": "sound",
+    "d": "based on good reasoning and reliable judgement",
+    "x": "The committee praised the proposal as financially sound and well researched."
+   },
+   {
+    "w": "rational",
+    "d": "based on clear reason rather than emotion",
+    "x": "A rational analysis of the costs led them to abandon the plan."
+   },
+   {
+    "w": "cogent",
+    "d": "clear, logical and very convincing",
+    "x": "She made a cogent case for investing more in public transport."
+   },
+   {
+    "w": "logical",
+    "d": "following clearly and sensibly from the reasoning",
+    "x": "Closing the older factories was the logical result of falling demand."
+   },
+   {
+    "w": "tenable",
+    "d": "able to be defended successfully against criticism",
+    "x": "Given the new evidence, the original explanation is no longer tenable."
+   },
+   {
+    "w": "plausible",
+    "d": "seeming reasonable and likely to be true",
+    "x": "The author offers a plausible explanation for the empire's sudden collapse."
+   }
+  ]
+ },
+ {
+  "g": "Arbitrary / random",
+  "sense": "without a clear system or reason",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "arbitrary",
+    "d": "based on chance or personal choice, not on reason",
+    "x": "The boundary between the two regions seems entirely arbitrary."
+   },
+   {
+    "w": "random",
+    "d": "happening without a definite pattern or plan",
+    "x": "Participants were placed into groups in a random order."
+   },
+   {
+    "w": "haphazard",
+    "d": "done without careful order or planning",
+    "x": "The city grew in a haphazard way, with little overall design."
+   },
+   {
+    "w": "erratic",
+    "d": "irregular and unpredictable in pattern or behaviour",
+    "x": "The instrument gave erratic readings that the team could not explain."
+   },
+   {
+    "w": "capricious",
+    "d": "changing suddenly and unpredictably, without clear reason",
+    "x": "The capricious weather made it hard to plan the field research."
+   }
+  ]
+ },
+ {
+  "g": "Relevant / applicable",
+  "sense": "connected to and bearing on the matter",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "relevant",
+    "d": "closely connected with and important to the matter being discussed",
+    "x": "The researcher excluded any data that was not directly relevant to the central question."
+   },
+   {
+    "w": "pertinent",
+    "d": "directly related and useful to the topic under consideration",
+    "x": "Her review raised several pertinent points about the study's sampling methods."
+   },
+   {
+    "w": "applicable",
+    "d": "able to be applied or relevant to a particular case",
+    "x": "These guidelines are applicable only to experiments involving human participants."
+   },
+   {
+    "w": "germane",
+    "d": "closely relevant and appropriate to the subject at hand",
+    "x": "The author omitted details that were not germane to the main argument."
+   },
+   {
+    "w": "apposite",
+    "d": "very suitable and clearly relevant to the point being made",
+    "x": "He chose an apposite example to illustrate the theory's practical limits."
+   },
+   {
+    "w": "salient",
+    "d": "most noticeable, important and relevant among many features",
+    "x": "The summary highlighted the salient findings of the lengthy report."
+   },
+   {
+    "w": "material",
+    "d": "significant and relevant enough to affect a decision or outcome",
+    "x": "The committee found no material difference between the two treatment groups."
+   }
+  ]
+ },
+ {
+  "g": "Subsequent / prior",
+  "sense": "ordering in time relative to something else",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "subsequent",
+    "d": "coming after something in time or order",
+    "x": "Subsequent studies confirmed the pattern observed in the original experiment."
+   },
+   {
+    "w": "ensuing",
+    "d": "happening directly afterwards as a result",
+    "x": "The policy shift and the ensuing debate dominated academic journals for years."
+   },
+   {
+    "w": "antecedent",
+    "d": "coming before something in time; earlier or prior",
+    "x": "Researchers traced the disease back to several antecedent environmental factors."
+   },
+   {
+    "w": "concurrent",
+    "d": "happening at the same time as something else",
+    "x": "The two surveys were concurrent, allowing direct comparison of the results."
+   },
+   {
+    "w": "forthcoming",
+    "d": "about to happen or appear in the near future",
+    "x": "The findings will be detailed in a forthcoming issue of the journal."
+   }
+  ]
+ },
+ {
+  "g": "Constitute / make up",
+  "sense": "to form, contain or stand for a whole",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "represent",
+    "d": "to form or amount to something; stand for a whole",
+    "x": "Women represent nearly half of all students enrolled in the programme."
+   },
+   {
+    "w": "embody",
+    "d": "to be a clear and complete expression of an idea",
+    "x": "The constitution embodies the core principles of the new democracy."
+   },
+   {
+    "w": "encompass",
+    "d": "to include or contain a wide range of things",
+    "x": "The survey encompasses respondents from twelve different countries."
+   },
+   {
+    "w": "encapsulate",
+    "d": "to express or contain the essential parts in a compact form",
+    "x": "The abstract encapsulates the study's aims, methods and key conclusions."
+   }
+  ]
+ },
+ {
+  "g": "Criterion / standard",
+  "sense": "a measure or benchmark for judging",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "criterion",
+    "d": "a standard or principle used to judge or decide something",
+    "x": "Originality was the main criterion for selecting papers for the conference."
+   },
+   {
+    "w": "benchmark",
+    "d": "a standard point of reference against which things are compared",
+    "x": "The 2010 results became the benchmark for measuring later progress."
+   },
+   {
+    "w": "yardstick",
+    "d": "a standard used for comparing or judging quality or amount",
+    "x": "Test scores alone are a poor yardstick for measuring a school's success."
+   },
+   {
+    "w": "threshold",
+    "d": "the level that must be reached for something to happen",
+    "x": "Results below this threshold were not considered statistically significant."
+   }
+  ]
+ },
+ {
+  "g": "Phenomenon / occurrence",
+  "sense": "a thing that happens or is observed",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "phenomenon",
+    "d": "a fact or event that is observed and studied",
+    "x": "Urban heat islands are a phenomenon widely documented in large cities."
+   },
+   {
+    "w": "occurrence",
+    "d": "something that happens or is observed to take place",
+    "x": "Severe droughts have become a more frequent occurrence in the region."
+   },
+   {
+    "w": "incidence",
+    "d": "the rate or frequency at which something happens",
+    "x": "The study reported a rising incidence of the disease among young adults."
+   },
+   {
+    "w": "episode",
+    "d": "a single distinct event or period within a sequence",
+    "x": "Each episode of flooding was recorded and analysed separately."
+   }
+  ]
+ },
+ {
+  "g": "Diverse / disparate",
+  "sense": "made up of clearly different kinds",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "heterogeneous",
+    "d": "made up of many different and varied parts or kinds",
+    "x": "The sample was heterogeneous, including people of widely different ages."
+   },
+   {
+    "w": "disparate",
+    "d": "made up of clearly different elements that do not match",
+    "x": "The theory tries to unite several disparate strands of earlier research."
+   },
+   {
+    "w": "varied",
+    "d": "consisting of many different types or forms",
+    "x": "The dataset drew on varied sources, from interviews to official records."
+   },
+   {
+    "w": "eclectic",
+    "d": "drawing ideas or elements from a wide, diverse range",
+    "x": "Her methodology was eclectic, combining statistical and ethnographic approaches."
+   }
+  ]
+ },
+ {
+  "g": "Aggregate / overall",
+  "sense": "taken together as a total",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "aggregate",
+    "d": "formed by combining many separate parts into a total",
+    "x": "The aggregate output of all regions rose by ten percent last year."
+   },
+   {
+    "w": "cumulative",
+    "d": "increasing in amount by successive additions over time",
+    "x": "The cumulative effect of small temperature rises proved highly significant."
+   },
+   {
+    "w": "collective",
+    "d": "shared by or relating to a whole group taken together",
+    "x": "The collective findings of these trials support the proposed treatment."
+   },
+   {
+    "w": "overall",
+    "d": "taking everything into account; considered as a whole",
+    "x": "The overall trend points to steady growth across the entire period."
+   }
+  ]
+ },
+ {
+  "g": "Approximate / estimate",
+  "sense": "to judge a value or amount roughly",
+  "tag": "academic",
+  "note": "",
+  "words": [
+   {
+    "w": "approximate",
+    "d": "to come close to a value or amount without being exact",
+    "x": "The model can only approximate the true rate of population growth."
+   },
+   {
+    "w": "reckon",
+    "d": "to calculate or estimate a number or amount roughly",
+    "x": "Analysts reckon the cost at around two billion dollars a year."
+   },
+   {
+    "w": "surmise",
+    "d": "to guess or judge something from incomplete evidence",
+    "x": "From the fossils, scientists surmise the climate was once tropical."
+   }
+  ]
  }
 ];
 

@@ -46,6 +46,16 @@
   let store = load();
   const now = function () { return Date.now(); };
 
+  /* ---------- change notifier + merge (for cloud sync) ---------- */
+  let changeCb = null;
+  function notifyChange() { if (changeCb) { try { changeCb(store); } catch (e) {} } }
+  function mergeStores(a, b) {
+    const out = {};
+    for (const k in a) out[k] = a[k];
+    for (const k in b) { if (!out[k] || (b[k].ts || 0) > (out[k].ts || 0)) out[k] = b[k]; }
+    return out;
+  }
+
   /* ---------- registry (id -> flashcard descriptor) ---------- */
   function wStep(it) {
     if (typeof it === "string") return { primary: it, term: it };
@@ -143,6 +153,7 @@
     s.ts = now();
     store[id] = s;
     save();
+    notifyChange();
   }
 
   function fmtLeft(ms) {
@@ -253,6 +264,7 @@
       const pre = b.getAttribute("data-prefix");
       Object.keys(store).forEach(function (k) { if (k.indexOf(pre) === 0) delete store[k]; });
       save();
+      notifyChange();
       applyAll();
     });
   }
@@ -439,6 +451,22 @@
     else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
     else if (e.key === "Enter") { e.preventDefault(); openCambridge(); }   // hear pronunciation
   }
+
+  /* ---------- public API for cloud sync (sync.js) ---------- */
+  window.SRS = {
+    // current progress map: { cardId: { level, ts } }
+    export: function () { return JSON.parse(JSON.stringify(store)); },
+    // merge a remote map in (newer ts wins per card), persist + re-render,
+    // and return the merged map so the caller can write it back once
+    importRemote: function (remote) {
+      store = mergeStores(store, remote || {});
+      save();
+      applyAll();
+      return JSON.parse(JSON.stringify(store));
+    },
+    // register a callback fired after every local change (study / reset)
+    onChange: function (cb) { changeCb = cb; }
+  };
 
   /* ---------- init ---------- */
   function init() {

@@ -177,6 +177,29 @@ body::before {
 @media (max-width: 760px) { .topbar .band-chip { display: none; } }
 @media (max-width: 560px) { .brand span { display: none; } .mode-btn { padding: 0.42rem 0.7rem; } }
 
+/* ---------- sign-in / sync button ---------- */
+.topbar-right { display: flex; align-items: center; gap: 0.7rem; }
+.auth-btn {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--hair-strong);
+  border-radius: 6px;
+  padding: 0.42rem 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.auth-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.auth-btn:disabled { opacity: 0.5; cursor: default; }
+.auth-btn.signed-in { border-color: var(--accent); color: var(--accent); }
+
 /* view + nav swapping by mode (default = reading) */
 .view[data-view="writing"] { display: none; }
 body[data-mode="writing"] .view[data-view="writing"] { display: block; }

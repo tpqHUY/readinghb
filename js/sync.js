@@ -53,6 +53,35 @@
     const provider = new auth.GoogleAuthProvider();
     let uid = null, unsub = null, writeTimer = null, applyingRemote = false;
 
+    function flashError(e) {
+      const code = (e && (e.code || e.message)) || "error";
+      setBtn("Sign-in error", { title: code });
+      console.warn("[sync] auth error:", code, e);
+      setTimeout(function () { if (!authInstance.currentUser) setBtn("Sign in", {}); }, 4000);
+    }
+
+    // popup is nicer but is blocked by many browsers / third-party-cookie
+    // settings and on mobile; fall back to a full-page redirect.
+    const POPUP_FALLBACK = [
+      "auth/popup-blocked", "auth/popup-closed-by-user", "auth/cancelled-popup-request",
+      "auth/operation-not-supported-in-this-environment", "auth/web-storage-unsupported",
+      "auth/internal-error"
+    ];
+    async function doSignIn() {
+      try {
+        await auth.signInWithPopup(authInstance, provider);
+      } catch (e) {
+        if (POPUP_FALLBACK.indexOf(e && e.code) !== -1) {
+          try { await auth.signInWithRedirect(authInstance, provider); }
+          catch (e2) { flashError(e2); }
+        } else {
+          flashError(e);
+        }
+      }
+    }
+    // catch results / errors coming back from a redirect sign-in
+    auth.getRedirectResult(authInstance).catch(flashError);
+
     function userRef() { return fs.doc(db, "users", uid); }
 
     function pushSoon(storeObj) {
@@ -106,9 +135,7 @@
       if (authInstance.currentUser) {
         auth.signOut(authInstance);
       } else {
-        auth.signInWithPopup(authInstance, provider).catch(function (e) {
-          console.warn("[sync] sign-in failed:", e);
-        });
+        doSignIn();
       }
     });
   })();

@@ -522,13 +522,13 @@
     return set;
   }
   function primaryForm(term) { return term.split("/")[0].replace(/\([^)]*\)/g, "").trim(); }
-  function maskHint(term) {
+  // reveal the first n characters of the primary form, mask the rest
+  function maskPrefix(term, n) {
     const p = primaryForm(term);
-    if (p.length <= 2) return p;
     let out = "";
     for (let i = 0; i < p.length; i++) {
       const ch = p[i];
-      if (i === 0 || i === p.length - 1) out += ch;
+      if (i < n) out += ch;
       else out += (ch === " ") ? " " : "·";
     }
     return out + "  (" + p.length + ")";
@@ -559,11 +559,17 @@
     ov.querySelector('[data-q="submit"]').textContent = "Check ›";
     const timer = ov.querySelector(".srs-qtimer"); timer.textContent = "hint in 15s";
     setTimeout(function () { try { input.focus(); } catch (e) {} }, 40);
-    quiz.hintTimer = setTimeout(function () {
+    // progressive hint: every 15s reveal 2 more letters, until the whole word shows
+    const len = primaryForm(it.term).length;
+    quiz.hintN = 0;
+    function revealStep() {
+      quiz.hintN += 2;
       hint.hidden = false;
-      hint.innerHTML = "hint &nbsp; <b>" + maskHint(it.term) + "</b>";
-      timer.textContent = "";
-    }, HINT_MS);
+      hint.innerHTML = "hint &nbsp; <b>" + maskPrefix(it.term, quiz.hintN) + "</b>";
+      if (quiz.hintN < len) { timer.textContent = "+2 letters in 15s"; quiz.hintTimer = setTimeout(revealStep, HINT_MS); }
+      else { timer.textContent = ""; }
+    }
+    quiz.hintTimer = setTimeout(revealStep, HINT_MS);
   }
 
   function submitQ() {

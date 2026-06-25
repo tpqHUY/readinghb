@@ -1336,6 +1336,49 @@ ul.traps li .ex {
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 .srs-cam:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ---------- quiz view ---------- */
+.srs-qtitle { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; }
+.srs-qsub { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-top: 0.2rem; }
+.srs-qcount { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); }
+.srs-qscore { font-family: var(--mono); font-size: 0.64rem; color: var(--text-faint); margin-top: 0.2rem; }
+.srs-qbody { min-height: 9.5rem; padding: 1.5rem 0 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.9rem; text-align: center; }
+.srs-qmeaning { font-size: 1.2rem; line-height: 1.5; color: var(--text); max-width: 44ch; }
+.srs-qinput {
+  width: min(420px, 100%);
+  appearance: none;
+  background: var(--surface-2);
+  border: 1px solid var(--hair-strong);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  text-align: center;
+  color: var(--text);
+}
+.srs-qinput:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.srs-qinput:disabled { opacity: 0.85; }
+.srs-qhint { font-family: var(--mono); font-size: 0.92rem; color: var(--accent); letter-spacing: 0.04em; }
+.srs-qhint b { font-weight: 600; letter-spacing: 0.18em; }
+.srs-qfeedback { font-family: var(--mono); font-size: 0.86rem; }
+.srs-qfeedback.good { color: #3E8E5A; }
+.srs-qfeedback.bad { color: var(--trap); }
+.srs-qfeedback b { font-family: var(--serif); font-style: normal; font-size: 1.05rem; }
+.srs-qfeedback .qex { display: block; font-family: var(--serif); font-style: italic; color: var(--text-soft); margin-top: 0.4rem; font-size: 0.95rem; }
+.srs-qtimer { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); flex: 1; text-align: left; }
+
+/* ---------- message / result view ---------- */
+.srs-view-msg { text-align: center; padding: 1.4rem 0.5rem 0.4rem; }
+.srs-msg-icon { font-size: 2.6rem; line-height: 1; margin-bottom: 0.6rem; }
+.srs-msg-icon.good { color: #3E8E5A; }
+.srs-msg-icon.bad { color: var(--trap); }
+.srs-msg-title { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; }
+.srs-msg-text { font-size: 0.98rem; color: var(--text-soft); max-width: 42ch; margin: 0.6rem auto 1.2rem; line-height: 1.55; }
+
+/* ---------- locked card ---------- */
+.srs-card.srs-locked .srs-dot { background: var(--text-faint); animation: none; }
+.srs-card.srs-locked .srs-bar .right { color: var(--trap); }
+.srs-card.srs-locked { filter: saturate(0.7); }
 .srs-stage.is-note .srs-primary {
   font-family: var(--sans);
   font-style: normal;

@@ -233,10 +233,17 @@
       c.el.classList.toggle("srs-rotting", v.rot > 0);
       c.el.setAttribute("data-srs-level", v.level);
       const st = statusText(v);
+      const lk = lockLeft(c.id);
+      c.el.classList.toggle("srs-locked", !!lk);
       const lvlEl = c.el.querySelector(".srs-lvl");
       const rEl = c.el.querySelector(".srs-bar .right");
-      if (lvlEl) lvlEl.textContent = st.l;
-      if (rEl) rEl.textContent = st.r;
+      if (lk) {
+        if (lvlEl) lvlEl.textContent = "🔒 Locked";
+        if (rEl) rEl.textContent = "retake in " + Math.ceil(lk / 60000) + "m";
+      } else {
+        if (lvlEl) lvlEl.textContent = st.l;
+        if (rEl) rEl.textContent = st.r;
+      }
       const numEl = c.el.querySelector(".srs-pct-num");
       if (numEl) numEl.textContent = v.retention + "%";
     });
@@ -303,78 +310,141 @@
     });
   }
 
-  /* ---------- focus flashcard overlay ---------- */
+  /* ---------- focus overlay: flashcard / quiz / message ---------- */
+  const LOCK_MS = 30 * 60000;   // 30-minute lock after a failed quiz
+  const HINT_MS = 15000;        // reveal a hint after 15s with no answer
+  const PASS_RATE = 0.8;        // 80% to pass the quiz
+
+  // failed-quiz locks are device-local (not synced)
+  const LKEY = "ielts-reading-locks-v1";
+  function loadLocks() { try { return JSON.parse(localStorage.getItem(LKEY)) || {}; } catch (e) { return {}; } }
+  let locks = loadLocks();
+  function saveLocks() { try { localStorage.setItem(LKEY, JSON.stringify(locks)); } catch (e) {} }
+  function lockLeft(id) { const u = locks[id]; return (u && u > now()) ? (u - now()) : 0; }
+
   let ov = null;
-  let current = null;
+  let mode = null;       // 'card' | 'quiz' | 'msg'
+  let current = null;    // flashcard state
+  let quiz = null;       // quiz state
+  let msgOk = null;      // message OK handler
 
   function buildOverlay() {
     ov = document.createElement("div");
     ov.className = "srs-overlay";
     ov.setAttribute("role", "dialog");
     ov.setAttribute("aria-modal", "true");
-    ov.setAttribute("aria-label", "Flashcard review");
+    ov.setAttribute("aria-label", "Review");
     ov.innerHTML =
       '<div class="srs-backdrop" data-close></div>' +
       '<div class="srs-panel" role="document">' +
         '<button class="srs-x" data-nav data-act="close" aria-label="Close">×</button>' +
-        '<div class="srs-phead"><div><div class="srs-ptitle"></div><div class="srs-psense"></div></div>' +
-          '<div style="text-align:right"><div class="srs-counter"></div><div class="srs-queue" style="display:none"></div></div></div>' +
-        '<div class="srs-prog"><span></span></div>' +
-        '<div class="srs-stage">' +
-          '<div class="srs-primary"></div>' +
-          '<div class="srs-secondary"></div>' +
-          '<div class="srs-def"></div>' +
-          '<div class="srs-example"></div>' +
-          '<a class="srs-cam" target="_blank" rel="noopener" data-nav data-act="cam">🔊 Hear on Cambridge · press ↵</a>' +
+
+        '<div class="srs-view srs-view-card">' +
+          '<div class="srs-phead"><div><div class="srs-ptitle"></div><div class="srs-psense"></div></div>' +
+            '<div style="text-align:right"><div class="srs-counter"></div><div class="srs-queue" style="display:none"></div></div></div>' +
+          '<div class="srs-prog"><span></span></div>' +
+          '<div class="srs-stage">' +
+            '<div class="srs-primary"></div>' +
+            '<div class="srs-secondary"></div>' +
+            '<div class="srs-def"></div>' +
+            '<div class="srs-example"></div>' +
+            '<a class="srs-cam" target="_blank" rel="noopener" data-nav data-act="cam">🔊 Hear on Cambridge · press ↵</a>' +
+          "</div>" +
+          '<div class="srs-foot">' +
+            '<button class="srs-btn" data-nav data-act="prev">‹ Prev</button>' +
+            '<div class="srs-hint"></div>' +
+            '<button class="srs-btn primary" data-nav data-act="next">Next ›</button>' +
+          "</div>" +
         "</div>" +
-        '<div class="srs-foot">' +
-          '<button class="srs-btn" data-nav data-act="prev">‹ Prev</button>' +
-          '<div class="srs-hint"></div>' +
-          '<button class="srs-btn primary" data-nav data-act="next">Next ›</button>' +
+
+        '<div class="srs-view srs-view-quiz" hidden>' +
+          '<div class="srs-phead"><div><div class="srs-qtitle"></div><div class="srs-qsub">Quiz · type the word from its meaning</div></div>' +
+            '<div style="text-align:right"><div class="srs-qcount"></div><div class="srs-qscore"></div></div></div>' +
+          '<div class="srs-prog"><span></span></div>' +
+          '<div class="srs-qbody">' +
+            '<div class="srs-qmeaning"></div>' +
+            '<input class="srs-qinput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="type the word / phrase…" />' +
+            '<div class="srs-qhint" hidden></div>' +
+            '<div class="srs-qfeedback" hidden></div>' +
+          "</div>" +
+          '<div class="srs-foot">' +
+            '<div class="srs-qtimer"></div>' +
+            '<button class="srs-btn primary" data-q="submit">Check ›</button>' +
+          "</div>" +
         "</div>" +
+
+        '<div class="srs-view srs-view-msg" hidden>' +
+          '<div class="srs-msg-icon"></div>' +
+          '<div class="srs-msg-title"></div>' +
+          '<div class="srs-msg-text"></div>' +
+          '<div class="srs-foot" style="justify-content:center">' +
+            '<button class="srs-btn primary" data-q="msgok">OK</button>' +
+          "</div>" +
+        "</div>" +
+
       "</div>";
     document.body.appendChild(ov);
     ov.addEventListener("click", onOverlayClick);
   }
 
+  function showView(which) {
+    mode = which;
+    ov.querySelector(".srs-view-card").hidden = which !== "card";
+    ov.querySelector(".srs-view-quiz").hidden = which !== "quiz";
+    ov.querySelector(".srs-view-msg").hidden = which !== "msg";
+  }
+  function openShell() {
+    ov.classList.add("open");
+    document.documentElement.style.overflow = "hidden";
+    document.removeEventListener("keydown", onKey);
+    document.addEventListener("keydown", onKey);
+  }
+
   function open(id, queue, qpos) {
     const r = reg[id];
     if (!r || !r.steps.length) return;
-    // Reading cards (not writing "w:") shuffle their word order once learned,
-    // so each review session presents the words in a fresh random order.
+    queue = queue || null; qpos = qpos || 0;
+    if (lockLeft(id)) { openLocked(id); return; }
+    // 2nd review onward of a reading card -> quiz; otherwise flashcard
     const isReading = id.indexOf("w:") !== 0;
-    const reshuffle = isReading && store[id] && store[id].level >= 1 && r.steps.length > 1;
-    const steps = reshuffle ? shuffled(r.steps) : r.steps.slice();
-    if (r.note) steps.push({ isNote: true, primary: r.note });
-    current = { id: id, steps: steps, index: 0, completed: false, queue: queue || null, qpos: qpos || 0 };
-    ov.querySelector(".srs-ptitle").textContent = r.title;
-    ov.querySelector(".srs-psense").textContent = (r.sense || "") + (reshuffle ? " · shuffled" : "");
-    const q = ov.querySelector(".srs-queue");
-    if (current.queue) {
-      q.style.display = "";
-      q.textContent = "Due queue · " + (current.qpos + 1) + " / " + current.queue.length;
-    } else {
-      q.style.display = "none";
-    }
-    render();
-    ov.classList.add("open");
-    document.documentElement.style.overflow = "hidden";
-    document.addEventListener("keydown", onKey);
-    const nx = ov.querySelector('[data-act="next"]');
-    if (nx) nx.focus();
+    const reviewed = store[id] && store[id].level >= 1;
+    if (isReading && reviewed) startQuiz(id, r, queue, qpos);
+    else startCard(id, r, queue, qpos);
   }
 
   function startDueReview(prefix) {
     const due = [];
     cards.forEach(function (c) {
-      if (!prefix || c.id.indexOf(prefix) === 0) {
+      if ((!prefix || c.id.indexOf(prefix) === 0) && !lockLeft(c.id)) {
         const v = view(c.id);
         if (v.status === "due") due.push({ id: c.id, over: v.overdue });
       }
     });
     if (!due.length) return;
-    due.sort(function (a, b) { return b.over - a.over; }); // most faded first
+    due.sort(function (a, b) { return b.over - a.over; });
     open(due[0].id, due.map(function (d) { return d.id; }), 0);
+  }
+
+  function continueQueue(queue, pos) {
+    closeRaw();
+    applyAll();
+    if (queue && pos + 1 < queue.length) open(queue[pos + 1], queue, pos + 1);
+  }
+
+  /* ---------- flashcard mode ---------- */
+  function startCard(id, r, queue, qpos) {
+    const steps = r.steps.slice();
+    if (r.note) steps.push({ isNote: true, primary: r.note });
+    current = { id: id, steps: steps, index: 0, completed: false, queue: queue, qpos: qpos };
+    ov.querySelector(".srs-ptitle").textContent = r.title;
+    ov.querySelector(".srs-psense").textContent = r.sense || "";
+    const q = ov.querySelector(".srs-queue");
+    if (queue) { q.style.display = ""; q.textContent = "Due queue · " + (qpos + 1) + " / " + queue.length; }
+    else q.style.display = "none";
+    showView("card");
+    render();
+    openShell();
+    const nx = ov.querySelector('[data-act="next"]'); if (nx) nx.focus();
   }
 
   function render() {
@@ -382,7 +452,7 @@
     const s = steps[i];
     if (i >= steps.length - 1) current.completed = true;
     ov.querySelector(".srs-counter").textContent = (i + 1) + " / " + steps.length;
-    ov.querySelector(".srs-prog span").style.width = ((i + 1) / steps.length * 100) + "%";
+    ov.querySelector(".srs-view-card .srs-prog span").style.width = ((i + 1) / steps.length * 100) + "%";
     const stage = ov.querySelector(".srs-stage");
     stage.classList.toggle("is-note", !!s.isNote);
     ov.querySelector(".srs-primary").textContent = s.primary;
@@ -397,12 +467,8 @@
     exEl.textContent = (!s.isNote && s.example) ? "“" + s.example + "”" : "";
     exEl.style.display = (!s.isNote && s.example) ? "block" : "none";
     const cam = ov.querySelector(".srs-cam");
-    if (s.isNote) {
-      cam.style.display = "none";
-    } else {
-      cam.style.display = "";
-      cam.href = cambridgeURL(s.term || s.primary);
-    }
+    if (s.isNote) { cam.style.display = "none"; }
+    else { cam.style.display = ""; cam.href = cambridgeURL(s.term || s.primary); }
     ov.querySelector('[data-act="prev"]').disabled = i === 0;
     const next = ov.querySelector('[data-act="next"]');
     const hint = ov.querySelector(".srs-hint");
@@ -423,46 +489,179 @@
     if (!current) return;
     const q = current.queue, pos = current.qpos;
     markLearned(current.id);
-    closeRaw();
-    applyAll();
-    if (q && pos + 1 < q.length) open(q[pos + 1], q, pos + 1);
+    continueQueue(q, pos);
+  }
+
+  function openCambridge() {
+    if (mode !== "card" || !current) return;
+    const s = current.steps[current.index];
+    if (s.isNote) return;
+    window.open(cambridgeURL(s.term || s.primary), "_blank", "noopener");
+  }
+
+  /* ---------- quiz mode ---------- */
+  function normAns(s) {
+    return String(s).toLowerCase().replace(/\([^)]*\)/g, " ").replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+  }
+  function acceptable(term) {
+    const set = [normAns(term)];
+    term.split("/").forEach(function (p) { const n = normAns(p); if (n && set.indexOf(n) === -1) set.push(n); });
+    return set;
+  }
+  function primaryForm(term) { return term.split("/")[0].replace(/\([^)]*\)/g, "").trim(); }
+  function maskHint(term) {
+    const p = primaryForm(term);
+    if (p.length <= 2) return p;
+    let out = "";
+    for (let i = 0; i < p.length; i++) {
+      const ch = p[i];
+      if (i === 0 || i === p.length - 1) out += ch;
+      else out += (ch === " ") ? " " : "·";
+    }
+    return out + "  (" + p.length + ")";
+  }
+  function clearHintTimer() { if (quiz && quiz.hintTimer) { clearTimeout(quiz.hintTimer); quiz.hintTimer = null; } }
+
+  function startQuiz(id, r, queue, qpos) {
+    const items = r.steps.filter(function (s) { return s.term; });
+    quiz = { id: id, r: r, items: shuffled(items), i: 0, correct: 0, answered: false, hintTimer: null, queue: queue, qpos: qpos };
+    ov.querySelector(".srs-qtitle").textContent = r.title;
+    showView("quiz");
+    renderQ();
+    openShell();
+  }
+
+  function renderQ() {
+    clearHintTimer();
+    quiz.answered = false;
+    const it = quiz.items[quiz.i];
+    ov.querySelector(".srs-qcount").textContent = (quiz.i + 1) + " / " + quiz.items.length;
+    ov.querySelector(".srs-qscore").textContent = quiz.correct + " correct";
+    ov.querySelector(".srs-view-quiz .srs-prog span").style.width = (quiz.i / quiz.items.length * 100) + "%";
+    ov.querySelector(".srs-qmeaning").textContent = it.def || it.secondary || "(meaning unavailable)";
+    const input = ov.querySelector(".srs-qinput");
+    input.value = ""; input.disabled = false;
+    const hint = ov.querySelector(".srs-qhint"); hint.hidden = true; hint.innerHTML = "";
+    const fb = ov.querySelector(".srs-qfeedback"); fb.hidden = true; fb.innerHTML = ""; fb.className = "srs-qfeedback";
+    ov.querySelector('[data-q="submit"]').textContent = "Check ›";
+    const timer = ov.querySelector(".srs-qtimer"); timer.textContent = "hint in 15s";
+    setTimeout(function () { try { input.focus(); } catch (e) {} }, 40);
+    quiz.hintTimer = setTimeout(function () {
+      hint.hidden = false;
+      hint.innerHTML = "hint &nbsp; <b>" + maskHint(it.term) + "</b>";
+      timer.textContent = "";
+    }, HINT_MS);
+  }
+
+  function submitQ() {
+    if (!quiz) return;
+    if (quiz.answered) {
+      quiz.i++;
+      if (quiz.i >= quiz.items.length) finishQuiz();
+      else renderQ();
+      return;
+    }
+    clearHintTimer();
+    const it = quiz.items[quiz.i];
+    const input = ov.querySelector(".srs-qinput");
+    const ans = normAns(input.value);
+    const ok = ans !== "" && acceptable(it.term).indexOf(ans) !== -1;
+    quiz.answered = true;
+    input.disabled = true;
+    if (ok) quiz.correct++;
+    const fb = ov.querySelector(".srs-qfeedback");
+    fb.hidden = false;
+    fb.className = "srs-qfeedback " + (ok ? "good" : "bad");
+    fb.innerHTML = (ok ? "✓ correct" : "✗ answer: <b>" + primaryForm(it.term) + "</b>") +
+      (it.example ? '<span class="qex">“' + it.example + "”</span>" : "");
+    ov.querySelector(".srs-qscore").textContent = quiz.correct + " correct";
+    ov.querySelector(".srs-qtimer").textContent = "";
+    const last = quiz.i >= quiz.items.length - 1;
+    ov.querySelector('[data-q="submit"]').textContent = last ? "See result ›" : "Next ›";
+  }
+
+  function finishQuiz() {
+    clearHintTimer();
+    const total = quiz.items.length;
+    const rate = total ? quiz.correct / total : 0;
+    const pct = Math.round(rate * 100);
+    const passed = rate >= PASS_RATE;
+    const id = quiz.id, queue = quiz.queue, qpos = quiz.qpos;
+    if (passed) { markLearned(id); delete locks[id]; saveLocks(); }
+    else { locks[id] = now() + LOCK_MS; saveLocks(); }
+    showMsg(
+      passed ? "✓" : "✕",
+      (passed ? "Passed · " : "Locked · ") + pct + "% (" + quiz.correct + "/" + total + ")",
+      passed
+        ? "This card moves up the spaced-repetition ladder — come back at the next interval."
+        : "Below 80%. This card is locked for 30 minutes; review the words, then retake.",
+      passed ? "good" : "bad",
+      function () { quiz = null; continueQueue(queue, qpos); }
+    );
+  }
+
+  /* ---------- message / locked view ---------- */
+  function showMsg(icon, title, text, kind, onOk) {
+    const ic = ov.querySelector(".srs-msg-icon");
+    ic.textContent = icon; ic.className = "srs-msg-icon " + (kind || "");
+    ov.querySelector(".srs-msg-title").textContent = title;
+    ov.querySelector(".srs-msg-text").textContent = text;
+    msgOk = onOk || function () { closeRaw(); };
+    showView("msg");
+    const b = ov.querySelector('[data-q="msgok"]');
+    setTimeout(function () { try { b.focus(); } catch (e) {} }, 40);
+  }
+
+  function openLocked(id) {
+    const r = reg[id];
+    const mins = Math.ceil(lockLeft(id) / 60000);
+    showMsg("🔒", "Locked for now",
+      (r ? r.title + " — " : "") + "you can retake in about " + mins + " minute" + (mins === 1 ? "" : "s") + ". Use the time to review the words first.",
+      "bad", function () { closeRaw(); });
+    openShell();
   }
 
   function closeRaw() {
+    clearHintTimer();
     ov.classList.remove("open");
     document.documentElement.style.overflow = "";
     document.removeEventListener("keydown", onKey);
-    current = null;
+    current = null; quiz = null; mode = null; msgOk = null;
   }
 
   function onOverlayClick(e) {
     const navBtn = e.target.closest("[data-nav]");
     if (navBtn) {
       const act = navBtn.getAttribute("data-act");
-      if (act === "prev") step(-1);
+      if (act === "close") closeRaw();
+      else if (act === "prev") step(-1);
       else if (act === "next") step(1);
-      else if (act === "close") closeRaw();
+      // 'cam' -> let the anchor open in a new tab
       return;
     }
-    // a click that isn't a control: finish if the set has been seen through,
-    // otherwise only the backdrop dismisses (without marking learned)
-    if (current && current.completed) { finish(); return; }
+    const qBtn = e.target.closest("[data-q]");
+    if (qBtn) {
+      const a = qBtn.getAttribute("data-q");
+      if (a === "submit") submitQ();
+      else if (a === "msgok" && msgOk) msgOk();
+      return;
+    }
+    if (mode === "card" && current && current.completed) { finish(); return; }
     if (e.target.closest("[data-close]")) closeRaw();
   }
 
-  function openCambridge() {
-    if (!current) return;
-    const s = current.steps[current.index];
-    if (s.isNote) return;
-    window.open(cambridgeURL(s.term || s.primary), "_blank", "noopener");
-  }
-
   function onKey(e) {
-    if (!current) return;
-    if (e.key === "Escape") closeRaw();
-    else if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); step(1); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
-    else if (e.key === "Enter") { e.preventDefault(); openCambridge(); }   // hear pronunciation
+    if (e.key === "Escape") { closeRaw(); return; }
+    if (mode === "card") {
+      if (!current) return;
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); step(1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+      else if (e.key === "Enter") { e.preventDefault(); openCambridge(); }
+    } else if (mode === "quiz") {
+      if (e.key === "Enter") { e.preventDefault(); submitQ(); }
+    } else if (mode === "msg") {
+      if (e.key === "Enter") { e.preventDefault(); if (msgOk) msgOk(); }
+    }
   }
 
   /* ---------- public API for cloud sync (sync.js) ---------- */

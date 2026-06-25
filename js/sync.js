@@ -22,6 +22,44 @@
     if (opts && opts.title) btn.title = opts.title;
   }
 
+  // Google blocks OAuth inside embedded/in-app browsers (Messenger, Instagram,
+  // Facebook, Zalo, TikTok, Android WebView...) with error 403 disallowed_useragent.
+  function isInAppBrowser() {
+    const ua = navigator.userAgent || "";
+    if (/FBAN|FBAV|FB_IAB|Messenger|Instagram|Line\/|MicroMessenger|Zalo|TikTok|Snapchat|Twitter|Pinterest|GSA/i.test(ua)) return true;
+    if (/Android.*;\s*wv\)/i.test(ua)) return true;            // Android WebView
+    return false;
+  }
+
+  function showAppBrowserHelp() {
+    if (document.getElementById("iabHelp")) return;
+    const url = location.href;
+    const wrap = document.createElement("div");
+    wrap.id = "iabHelp";
+    wrap.setAttribute("role", "dialog");
+    wrap.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:200;background:#16201d;color:#fff;" +
+      "padding:18px;box-shadow:0 -10px 36px rgba(0,0,0,.45);font-family:system-ui,-apple-system,sans-serif";
+    const btnCss = "appearance:none;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;" +
+      "border-radius:7px;padding:9px 14px;font-size:14px;cursor:pointer";
+    wrap.innerHTML =
+      '<div style="max-width:560px;margin:0 auto;font-size:14.5px;line-height:1.55">' +
+        '<b style="font-size:15.5px">Mở bằng trình duyệt để đăng nhập</b><br>' +
+        'Google chặn đăng nhập trong trình duyệt in-app (Messenger, Facebook, Instagram…). ' +
+        'Bấm <b>•••</b> ở góc trên màn hình &rarr; <b>Open in Safari / Mở trong trình duyệt</b>, rồi đăng nhập ở đó.' +
+        '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button id="iabCopy" style="' + btnCss + '">Copy link</button>' +
+          '<button id="iabClose" style="' + btnCss + '">Đóng</button>' +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(wrap);
+    const copy = document.getElementById("iabCopy");
+    copy.addEventListener("click", function () {
+      try { navigator.clipboard.writeText(url).then(function () { copy.textContent = "Đã copy ✓"; }); }
+      catch (e) { copy.textContent = url; }
+    });
+    document.getElementById("iabClose").addEventListener("click", function () { wrap.remove(); });
+  }
+
   const cfg = window.FIREBASE_CONFIG;
   const unconfigured = !cfg || !cfg.apiKey || /PASTE_|YOUR_|XXXX/.test(cfg.apiKey);
   if (unconfigured) {
@@ -99,6 +137,7 @@
     }
 
     setBtn("Sign in", { disabled: false });
+    if (isInAppBrowser()) setBtn("Open in browser ↗", { title: "In-app browsers block Google sign-in — open in Safari/Chrome" });
 
     auth.onAuthStateChanged(authInstance, async function (user) {
       if (user) {
@@ -134,6 +173,8 @@
     btn.addEventListener("click", function () {
       if (authInstance.currentUser) {
         auth.signOut(authInstance);
+      } else if (isInAppBrowser()) {
+        showAppBrowserHelp();   // OAuth would hit Google's 403 here
       } else {
         doSignIn();
       }

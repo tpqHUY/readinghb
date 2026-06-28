@@ -25,13 +25,13 @@ const TOEIC = {
       tips: [
         { t: "<b>Study the photo before the audio starts.</b> Ask: who? what action? where?", ex: "Pre-load likely words: a worker, a desk, holding, leaning, on the wall." },
         { t: "Decide if it is a <b>people photo</b> (focus on actions) or a <b>scene/object photo</b> (focus on location/state).", ex: "People &rarr; &lsquo;She is typing&rsquo;. Objects &rarr; &lsquo;Chairs are arranged in rows&rsquo;." },
-        { t: "Hold all four in mind and <b>eliminate</b> as you hear each one; keep the last one standing.", ex: "" },
+        { t: "Hold all four in mind and <b>eliminate</b> as you hear each one; keep the last one standing.", ex: "A (no &mdash; wrong action) &middot; B (no &mdash; not shown) &middot; C (yes, matches) &middot; D (no) &rarr; mark C." },
         { t: "Match the <b>verb tense and subject</b> exactly to the image.", ex: "&lsquo;is being loaded&rsquo; (action in progress) vs &lsquo;has been loaded&rsquo; (already done)." }
       ],
       traps: [
         { n: "Similar sounds.", d: "A wrong option swaps in a word that sounds like a right one.", ex: "&lsquo;working&rsquo; vs &lsquo;walking&rsquo;, &lsquo;copy&rsquo; vs &lsquo;coffee&rsquo;." },
         { n: "Right object, wrong action.", d: "The noun is in the photo but the verb describes something not happening.", ex: "There is a car, but no one &lsquo;is washing&rsquo; it." },
-        { n: "Active vs passive state.", d: "&lsquo;is being painted&rsquo; needs a person painting now; &lsquo;has been painted&rsquo; just needs paint.", ex: "" },
+        { n: "Active vs passive state.", d: "&lsquo;is being painted&rsquo; needs a person painting now; &lsquo;has been painted&rsquo; just needs paint.", ex: "A finished wall &rarr; &lsquo;has been painted&rsquo; (right); &lsquo;is being painted&rsquo; with no painter in view is the trap." },
         { n: "Plausible but not shown.", d: "A reasonable real-world guess the photo doesn&rsquo;t actually depict.", ex: "Reject anything you cannot see." }
       ]
     },
@@ -54,8 +54,8 @@ const TOEIC = {
       traps: [
         { n: "Repeated-word trap.", d: "A response echoes a word from the prompt &mdash; almost always wrong.", ex: "&lsquo;Did you finish the report?&rsquo; &rarr; &lsquo;The report is on the desk&rsquo; (sounds related, doesn&rsquo;t answer)." },
         { n: "Similar-sounding word.", d: "A near-homophone planted to mislead.", ex: "&lsquo;fare&rsquo; vs &lsquo;fair&rsquo;, &lsquo;leave&rsquo; vs &lsquo;live&rsquo;." },
-        { n: "Yes/No to a WH- question.", d: "Grammatically impossible &mdash; a quick elimination.", ex: "" },
-        { n: "Right topic, wrong response.", d: "On the same subject but not a logical reply to the actual question.", ex: "" }
+        { n: "Yes/No to a WH- question.", d: "Grammatically impossible &mdash; a quick elimination.", ex: "&lsquo;Where&rsquo;s the manager?&rsquo; &rarr; &lsquo;Yes, this morning&rsquo; is impossible; &lsquo;In her office&rsquo; is right." },
+        { n: "Right topic, wrong response.", d: "On the same subject but not a logical reply to the actual question.", ex: "&lsquo;How was the trip?&rsquo; &rarr; &lsquo;Next Monday&rsquo; (right topic, but answers &lsquo;when&rsquo;, not &lsquo;how&rsquo;)." }
       ]
     },
     {
@@ -70,14 +70,14 @@ const TOEIC = {
       ],
       tips: [
         { t: "<b>Read the three questions before the audio</b> and predict what to listen for.", ex: "Underline keywords: &lsquo;Why is the man calling?&rsquo;, &lsquo;What will the woman do next?&rsquo;" },
-        { t: "Questions follow the <b>conversation order</b> (Q1 = early, Q3 = late).", ex: "" },
+        { t: "Questions follow the <b>conversation order</b> (Q1 = early, Q3 = late).", ex: "Q1 &lsquo;What is the problem?&rsquo; (start) &rarr; Q3 &lsquo;What will the man do next?&rsquo; (end)." },
         { t: "Track <b>who says what</b> &mdash; detail is often attributed to a specific speaker.", ex: "Three-speaker sets love &lsquo;What does the second man suggest?&rsquo;" },
         { t: "For graphic questions, the answer <b>links the audio to the visual</b> &mdash; don&rsquo;t just read the chart.", ex: "Audio: &lsquo;the 2 p.m. session&rsquo; &rarr; look up its room on the schedule." }
       ],
       traps: [
-        { n: "Detail-swap distractor.", d: "A choice uses real words from the audio but the wrong number, time or place.", ex: "" },
-        { n: "Misattributed speaker.", d: "Something the woman said is offered as the man&rsquo;s view.", ex: "" },
-        { n: "Mentioned-but-not-asked.", d: "True in the conversation but not the answer to this question.", ex: "" },
+        { n: "Detail-swap distractor.", d: "A choice uses real words from the audio but the wrong number, time or place.", ex: "Audio: &lsquo;the order ships Friday&rsquo; &rarr; trap option says &lsquo;Thursday&rsquo;." },
+        { n: "Misattributed speaker.", d: "Something the woman said is offered as the man&rsquo;s view.", ex: "The woman booked the room, but a choice credits &lsquo;the man&rsquo; with the reservation." },
+        { n: "Mentioned-but-not-asked.", d: "True in the conversation but not the answer to this question.", ex: "They discuss price and a deadline; the question asks only about the deadline." },
         { n: "Intent questions.", d: "&lsquo;Why does she say &hellip;?&rsquo; needs the context/feeling, not the literal meaning.", ex: "&lsquo;That&rsquo;s great&rsquo; can be genuine or sarcastic depending on context." }
       ]
     },
@@ -95,13 +95,13 @@ const TOEIC = {
         { t: "<b>Identify the talk type from the first sentence</b> (speaker, audience, place).", ex: "&lsquo;Attention shoppers&hellip;&rsquo; = store announcement; &lsquo;You&rsquo;ve reached&hellip;&rsquo; = voicemail." },
         { t: "Read the questions first; the <b>first</b> is often purpose/speaker/location.", ex: "&lsquo;Where would this be heard?&rsquo;, &lsquo;Who is the speaker?&rsquo;" },
         { t: "The <b>last</b> question is often &lsquo;what will happen next&rsquo; or &lsquo;what are listeners asked to do&rsquo;.", ex: "Listen for the closing instruction or call to action." },
-        { t: "Map answers to the talk&rsquo;s order, just like Part 3.", ex: "" }
+        { t: "Map answers to the talk&rsquo;s order, just like Part 3.", ex: "Q1 comes from the opening line; Q3 from the closing instruction." }
       ],
       traps: [
-        { n: "Specific-detail distractor.", d: "Right area of the talk, wrong figure / date / name.", ex: "" },
-        { n: "Misread purpose.", d: "A reason that&rsquo;s plausible but not the speaker&rsquo;s actual aim.", ex: "" },
-        { n: "Future-action confusion.", d: "Mixing what already happened with what the speaker says will happen.", ex: "" },
-        { n: "Paraphrase mismatch.", d: "The correct answer rewords the talk; a trap reuses its exact words about a side point.", ex: "" }
+        { n: "Specific-detail distractor.", d: "Right area of the talk, wrong figure / date / name.", ex: "Talk: &lsquo;the tour starts at 9 a.m.&rsquo; &rarr; trap option says &lsquo;10 a.m.&rsquo;" },
+        { n: "Misread purpose.", d: "A reason that&rsquo;s plausible but not the speaker&rsquo;s actual aim.", ex: "A sale advert &rarr; trap: &lsquo;to announce a new branch&rsquo; (plausible, not the real aim)." },
+        { n: "Future-action confusion.", d: "Mixing what already happened with what the speaker says will happen.", ex: "&lsquo;We have relocated&rsquo; (done) vs &lsquo;we will relocate&rsquo; (next) &mdash; a choice swaps the two." },
+        { n: "Paraphrase mismatch.", d: "The correct answer rewords the talk; a trap reuses its exact words about a side point.", ex: "Talk: &lsquo;the flight is delayed&rsquo; &rarr; answer &lsquo;the departure is postponed&rsquo;, not the option echoing &lsquo;flight&rsquo;." }
       ]
     }
   ],

@@ -17,10 +17,10 @@
     return '<span' + (def ? ' title="' + escAttr(def) + '"' : "") + ">" + wText(it) + "</span>";
   }
 
-  /* ex may be a single string or an array of examples */
+  /* ex may be a single string or an array of examples; empties are dropped */
   function exHTML(ex) {
     if (!ex) return "";
-    const arr = Array.isArray(ex) ? ex : [ex];
+    const arr = (Array.isArray(ex) ? ex : [ex]).filter(function (e) { return e && String(e).trim(); });
     return arr.map(function (e) { return '<span class="ex">' + e + "</span>"; }).join("");
   }
 
@@ -245,10 +245,10 @@
     }).join("") + "</ol>";
   }
 
-  function writingCaseHTML(c) {
-    const base = "wt-" + c.id;
+  /* approach / structure / pitfalls case — shared by Writing & Speaking */
+  function approachCaseHTML(c, base, artId) {
     return (
-      '<article class="case" id="wcase-' + c.id + '">' +
+      '<article class="case" id="' + artId + '">' +
         '<div class="case-head">' +
           '<div class="case-no">' + c.no + "</div>" +
           '<div class="case-title"><h3>' + c.title + "</h3><div class=\"alias\">" + c.alias + "</div></div>" +
@@ -266,12 +266,60 @@
       "</article>"
     );
   }
+  function writingCaseHTML(c) { return approachCaseHTML(c, "wt-" + c.id, "wcase-" + c.id); }
+  function speakingCaseHTML(c) { return approachCaseHTML(c, "sp-" + c.id, "scase-" + c.id); }
 
-  if (window.WRITING) {
-    const W = window.WRITING;
+  /* techniques grid (Writing & Speaking share this card) */
+  function techniquesHTML(arr) {
+    return arr.map(function (t) {
+      return (
+        '<div class="pattern">' +
+          '<h4><span class="num">' + t.crit + "</span> " + t.name + "</h4>" +
+          '<div class="ex-wrap">' + exHTML(t.ex) + "</div>" +
+          '<p class="why">' + t.why + "</p>" +
+        "</div>"
+      );
+    }).join("");
+  }
 
-    const critEl = $("#wCriteria");
-    if (critEl) critEl.innerHTML = W.criteria.map(function (c) {
+  /* power-structure cards: frame + examples + usage note */
+  function structuresHTML(arr) {
+    return '<div class="structs">' + arr.map(function (s) {
+      return (
+        '<div class="struct">' +
+          '<div class="struct-head"><span class="struct-tag">' + (s.tag || "") + '</span><h4>' + s.name + "</h4></div>" +
+          '<p class="struct-frame">' + s.frame + "</p>" +
+          '<div class="struct-ex">' + exHTML(s.ex) + "</div>" +
+          (s.use ? '<p class="struct-use">' + s.use + "</p>" : "") +
+        "</div>"
+      );
+    }).join("") + "</div>";
+  }
+
+  /* practice-drill cards: cadence tag + method + steps + examples */
+  function practiceHTML(arr) {
+    return '<div class="drills">' + arr.map(function (d) {
+      return (
+        '<div class="drill">' +
+          '<div class="drill-head"><span class="drill-tag">' + d.tag + '</span><h4>' + d.name + "</h4></div>" +
+          '<p class="drill-how">' + d.how + "</p>" +
+          (d.steps ? '<ol class="steps">' + d.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("") + "</ol>" : "") +
+          (d.ex ? '<div class="drill-ex">' + exHTML(d.ex) + "</div>" : "") +
+        "</div>"
+      );
+    }).join("") + "</div>";
+  }
+
+  /* principles grid (how it is scored) */
+  function principlesHTML(arr) {
+    return arr.map(function (p) {
+      return '<div class="principle"><span class="n">' + p.n + '</span><h4>' + p.h + "</h4><p>" + p.p + "</p></div>";
+    }).join("");
+  }
+
+  /* the four criteria cards (Writing & Speaking) */
+  function criteriaHTML(arr) {
+    return arr.map(function (c) {
       return (
         '<div class="crit">' +
           '<div class="crit-head"><div class="code"><span>' + c.code + '</span><span class="pct">' + c.pct + "</span></div>" +
@@ -283,23 +331,32 @@
         "</div>"
       );
     }).join("");
+  }
+
+  /* mistakes list (shared) */
+  function mistakesHTML(arr) {
+    return arr.map(function (t) {
+      return "<li><span class=\"name\">" + t.n + "</span> " + t.d + exHTML(t.ex) + "</li>";
+    }).join("");
+  }
+
+  if (window.WRITING) {
+    const W = window.WRITING;
+
+    const critEl = $("#wCriteria");
+    if (critEl) critEl.innerHTML = criteriaHTML(W.criteria);
 
     const techEl = $("#wTechniques");
-    if (techEl) techEl.innerHTML = W.techniques.map(function (t) {
-      return (
-        '<div class="pattern">' +
-          '<h4><span class="num">' + t.crit + "</span> " + t.name + "</h4>" +
-          '<p class="ex">' + t.ex + "</p>" +
-          '<p class="why">' + t.why + "</p>" +
-        "</div>"
-      );
-    }).join("");
+    if (techEl) techEl.innerHTML = techniquesHTML(W.techniques);
+
+    const wStructEl = $("#wStructures");
+    if (wStructEl && W.structures) wStructEl.innerHTML = structuresHTML(W.structures);
+
+    const wPracticeEl = $("#wPractice");
+    if (wPracticeEl && W.practice) wPracticeEl.innerHTML = practiceHTML(W.practice);
 
     const misEl = $("#wMistakes");
-    if (misEl) misEl.innerHTML = W.mistakes.map(function (t) {
-      return "<li><span class=\"name\">" + t.n + "</span> " + t.d +
-        (t.ex ? '<span class="ex">' + t.ex + "</span>" : "") + "</li>";
-    }).join("");
+    if (misEl) misEl.innerHTML = mistakesHTML(W.mistakes);
 
     const t1El = $("#wT1Container");
     if (t1El) t1El.innerHTML = W.t1.map(writingCaseHTML).join("");
@@ -315,6 +372,97 @@
       return '<a href="#wcase-' + c.id + '"><span class="idx">' + (i + 1) + "</span> " + c.title + "</a>";
     }).join(""));
   }
+
+  /* ==========================================================
+     SPEAKING mode: principles, criteria, techniques, structures,
+     parts, practice, mistakes, langbank
+     ========================================================== */
+  if (window.SPEAKING) {
+    const S = window.SPEAKING;
+
+    const sPrin = $("#sPrinciples");
+    if (sPrin) sPrin.innerHTML = principlesHTML(S.principles);
+
+    const sCrit = $("#sCriteria");
+    if (sCrit) sCrit.innerHTML = criteriaHTML(S.criteria);
+
+    const sTech = $("#sTechniques");
+    if (sTech) sTech.innerHTML = techniquesHTML(S.techniques);
+
+    const sStruct = $("#sStructures");
+    if (sStruct) sStruct.innerHTML = structuresHTML(S.structures);
+
+    const sParts = $("#sParts");
+    if (sParts) sParts.innerHTML = S.parts.map(speakingCaseHTML).join("");
+
+    const sPrac = $("#sPractice");
+    if (sPrac) sPrac.innerHTML = practiceHTML(S.practice);
+
+    const sMis = $("#sMistakes");
+    if (sMis) sMis.innerHTML = mistakesHTML(S.mistakes);
+
+    // speaking part nav links
+    const nSP = $("#navSParts");
+    if (nSP) nSP.insertAdjacentHTML("beforeend", S.parts.map(function (c) {
+      return '<a href="#scase-' + c.id + '"><span class="idx">' + c.no + "</span> " + c.title + "</a>";
+    }).join(""));
+  }
+
+  /* ---------- speaking language bank: render + search + filter ---------- */
+  (function slang() {
+    const grid = $("#sLangGrid");
+    if (!grid || !window.SLANG) return;
+    const search = $("#sLangSearch"), chipsWrap = $("#sLangChips"), countEl = $("#sLangCount"), emptyEl = $("#sLangEmpty");
+    const sLabel = function (t) {
+      return t === "p1" ? "Part 1" : t === "p2" ? "Part 2" : t === "p3" ? "Part 3" : t === "all" ? "Any part" : t;
+    };
+
+    grid.innerHTML = SLANG.map(function (v, i) {
+      return (
+        '<div class="vcard srs-card" data-tag="' + v.tag + '" data-i="' + i + '" data-srs-id="s:' + i + '" tabindex="0" role="button">' +
+          '<div class="vhead"><h4>' + v.g + '</h4><span class="vtag">' + sLabel(v.tag) + "</span></div>" +
+          '<p class="vsense">' + v.sense + "</p>" +
+          '<div class="vwords">' + v.items.map(chip).join("") + "</div>" +
+        "</div>"
+      );
+    }).join("");
+
+    const tags = [];
+    SLANG.forEach(function (v) { if (tags.indexOf(v.tag) === -1) tags.push(v.tag); });
+    let active = "all";
+    chipsWrap.innerHTML =
+      '<button class="chip" data-tag="all" aria-pressed="true">All</button>' +
+      tags.map(function (t) { return '<button class="chip" data-tag="' + t + '" aria-pressed="false">' + sLabel(t) + "</button>"; }).join("");
+
+    const cards = $$(".vcard", grid);
+    function apply() {
+      const q = (search.value || "").trim().toLowerCase();
+      let shown = 0;
+      cards.forEach(function (card) {
+        const v = SLANG[+card.getAttribute("data-i")];
+        const tagOk = active === "all" || v.tag === active;
+        const hay = (v.g + " " + v.sense + " " + v.tag + " " +
+          v.items.map(function (w) { return wText(w) + " " + wDef(w) + " " + wEx(w); }).join(" ")).toLowerCase();
+        const show = tagOk && (!q || hay.indexOf(q) !== -1);
+        card.hidden = !show;
+        if (show) shown++;
+        $$(".vwords span", card).forEach(function (sp) {
+          sp.classList.toggle("hit", !!(q && sp.textContent.toLowerCase().indexOf(q) !== -1));
+        });
+      });
+      countEl.textContent = shown + " of " + SLANG.length + " groups";
+      emptyEl.hidden = shown !== 0;
+    }
+    search.addEventListener("input", apply);
+    chipsWrap.addEventListener("click", function (e) {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      active = chip.getAttribute("data-tag");
+      $$(".chip", chipsWrap).forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+      apply();
+    });
+    apply();
+  })();
 
   /* ---------- writing language bank: render + search + filter ---------- */
   (function wlang() {

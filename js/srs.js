@@ -98,6 +98,12 @@
       steps: v.items.map(wStep)
     };
   });
+  (window.SLANG || []).forEach(function (v, i) {
+    reg["s:" + i] = {
+      title: v.g, sense: v.sense, note: "",
+      steps: v.items.map(wStep)
+    };
+  });
 
   /* ---------- Cambridge dictionary link (audio pronunciation) ---------- */
   function cambridgeURL(term) {
@@ -252,7 +258,7 @@
 
   /* ---------- legends (per section) ---------- */
   function injectLegends() {
-    [["vocab", "v:"], ["confus", "c:"], ["colloc", "k:"], ["w-lang", "w:"]].forEach(function (pair) {
+    [["vocab", "v:"], ["confus", "c:"], ["colloc", "k:"], ["w-lang", "w:"], ["s-lang", "s:"]].forEach(function (pair) {
       const sec = document.getElementById(pair[0]);
       if (!sec) return;
       const head = sec.querySelector(".section-head");
@@ -411,7 +417,9 @@
     queue = queue || null; qpos = qpos || 0;
     if (lockLeft(id)) { openLocked(id); return; }
     const v = view(id);
-    const isReading = id.indexOf("w:") !== 0;
+    // only the reading banks (v:/c:/k:) use the typing quiz; writing (w:) and
+    // speaking (s:) language banks stay on flashcards
+    const isReading = /^(v|c|k):/.test(id);
     const reviewed = store[id] && store[id].level >= 1;
     // A session only counts toward spaced repetition when the card is NEW or
     // genuinely DUE. Opening a still-resting card is review-only (no progress).

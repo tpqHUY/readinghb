@@ -24,6 +24,7 @@
     <div class="mode-switch" role="tablist" aria-label="Section">
       <button class="mode-btn" role="tab" data-mode="reading" aria-selected="true" title="IELTS Reading">IELTS R</button>
       <button class="mode-btn" role="tab" data-mode="writing" aria-selected="false" title="IELTS Writing">IELTS W</button>
+      <button class="mode-btn" role="tab" data-mode="speaking" aria-selected="false" title="IELTS Speaking">IELTS S</button>
       <button class="mode-btn" role="tab" data-mode="toeic-lc" aria-selected="false" title="TOEIC Listening">TOEIC L</button>
       <button class="mode-btn" role="tab" data-mode="toeic-rc" aria-selected="false" title="TOEIC Reading">TOEIC R</button>
     </div>
@@ -65,9 +66,7 @@
             <a href="#w-intro"><span class="idx">00</span> How Writing is scored</a>
             <a href="#w-criteria"><span class="idx">W1</span> The four criteria</a>
             <a href="#w-technique"><span class="idx">W2</span> High-score techniques</a>
-            <a href="#w-models"><span class="idx">W3</span> Model answers</a>
-            <a href="#w-mistakes"><span class="idx">W4</span> Common mistakes</a>
-            <a href="#w-lang"><span class="idx">W5</span> Language bank</a>
+            <a href="#w-structures"><span class="idx">W3</span> Power structures</a>
           </div>
           <div class="nav-group" id="navWT1">
             <p class="nav-group-title">Task 1 · report</p>
@@ -76,6 +75,33 @@
           <div class="nav-group" id="navWT2">
             <p class="nav-group-title">Task 2 · essay</p>
             <!-- task 2 case links injected by JS -->
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Master it</p>
+            <a href="#w-models"><span class="idx">W4</span> Model answers</a>
+            <a href="#w-mistakes"><span class="idx">W5</span> Common mistakes</a>
+            <a href="#w-practice"><span class="idx">W6</span> Practice routine</a>
+            <a href="#w-lang"><span class="idx">W7</span> Language bank</a>
+          </div>
+        </div>
+
+        <div class="nav-mode" data-mode="speaking" hidden>
+          <div class="nav-group">
+            <p class="nav-group-title">Foundations</p>
+            <a href="#s-intro"><span class="idx">00</span> How Speaking is scored</a>
+            <a href="#s-criteria"><span class="idx">S1</span> The four criteria</a>
+            <a href="#s-technique"><span class="idx">S2</span> High-score techniques</a>
+            <a href="#s-structures"><span class="idx">S3</span> Power structures</a>
+          </div>
+          <div class="nav-group" id="navSParts">
+            <p class="nav-group-title">The three parts</p>
+            <!-- part links injected by JS -->
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Master it</p>
+            <a href="#s-practice"><span class="idx">S4</span> Practice routine</a>
+            <a href="#s-mistakes"><span class="idx">S5</span> Common mistakes</a>
+            <a href="#s-lang"><span class="idx">S6</span> Language bank</a>
           </div>
         </div>
 
@@ -481,6 +507,19 @@
 
       <hr class="divider" />
 
+      <!-- ---------- W3 POWER STRUCTURES ---------- -->
+      <section class="section" id="w-structures">
+        <div class="section-head">
+          <span class="eyebrow">W3 · The sentences that score</span>
+          <h2>Power structures</h2>
+          <p>The grammatical patterns band-8 writing leans on, each with a reusable frame and
+            examples for both tasks. Learn the <b>shape</b>, then pour your own content into it.</p>
+        </div>
+        <div id="wStructures"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
       <!-- ---------- TASK 1 CASES ---------- -->
       <section class="section" id="w-task1">
         <div class="section-head">
@@ -512,7 +551,7 @@
       <!-- ---------- W3 MODEL ANSWERS ---------- -->
       <section class="section" id="w-models">
         <div class="section-head">
-          <span class="eyebrow">W3 · See it done</span>
+          <span class="eyebrow">W4 · See it done</span>
           <h2>Annotated band 8 models</h2>
           <p>Full answers with the band-8 moves marked. Hover or tap a highlighted phrase to
             see <b>what it does</b> and <b>which criterion it serves</b> &mdash; the same four
@@ -524,10 +563,10 @@
 
       <hr class="divider" />
 
-      <!-- ---------- W4 COMMON MISTAKES ---------- -->
+      <!-- ---------- W5 COMMON MISTAKES ---------- -->
       <section class="section" id="w-mistakes">
         <div class="section-head">
-          <span class="eyebrow">W4 · Know the enemy</span>
+          <span class="eyebrow">W5 · Know the enemy</span>
           <h2>Common mistakes</h2>
           <p>The recurring errors that cap a score below band 8 — across both tasks. Each one
             is avoidable once you can name it.</p>
@@ -537,10 +576,24 @@
 
       <hr class="divider" />
 
-      <!-- ---------- W4 LANGUAGE BANK ---------- -->
+      <!-- ---------- W6 PRACTICE ROUTINE ---------- -->
+      <section class="section" id="w-practice">
+        <div class="section-head">
+          <span class="eyebrow">W6 · How to train</span>
+          <h2>Practice routine</h2>
+          <p>Bands rise from <b>deliberate</b> practice, not just more essays. These are the
+            drills that actually move the needle — under the clock, marked against the criteria,
+            with a feedback loop. Build a weekly rhythm from them.</p>
+        </div>
+        <div id="wPractice"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- W7 LANGUAGE BANK ---------- -->
       <section class="section" id="w-lang">
         <div class="section-head">
-          <span class="eyebrow">W5 · The raw material</span>
+          <span class="eyebrow">W7 · The raw material</span>
           <h2>Language bank</h2>
           <p>Reusable phrases and structures grouped by <b>what they do</b> — describe a trend,
             compare, give an opinion, concede, conclude. Tap a card to drill it as a flashcard;
@@ -559,6 +612,151 @@
       </section>
 
      </div><!-- /view writing -->
+
+     <!-- ========================================================= -->
+     <!-- ===================  SPEAKING VIEW  ===================== -->
+     <!-- ========================================================= -->
+     <div class="view" data-view="speaking" hidden>
+
+      <!-- ---------- HERO ---------- -->
+      <section class="hero">
+        <span class="eyebrow">A conversation you can prepare for</span>
+        <h1>Speak to <em>communicate</em>, not to perform.</h1>
+        <p class="lede">
+          The examiner isn&rsquo;t grading your ideas — they&rsquo;re grading how you say them:
+          your flow, your words, your grammar and your sound. Band 8 is a relaxed, well-structured
+          talker who extends every answer, varies their language on purpose, and is easy to follow.
+          This half of the casebook turns each part into a repeatable plan — and a way to train it.</p>
+
+        <div class="wave" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="timing">
+          <div class="cell"><div class="big">4&ndash;5<span style="font-size:1rem">min</span></div><div class="lab">Part 1 · interview</div><p>Short questions on familiar topics. Answer in 2&ndash;4 sentences — never one word.</p></div>
+          <div class="cell"><div class="big">1&ndash;2<span style="font-size:1rem">min</span></div><div class="lab">Part 2 · long turn</div><p>One minute to prepare, then you speak alone. Structure beats inspiration.</p></div>
+          <div class="cell"><div class="big">4&ndash;5<span style="font-size:1rem">min</span></div><div class="lab">Part 3 · discussion</div><p>Abstract, two-way. Where band 7+ is won — opinion, reasons, balance.</p></div>
+          <div class="cell"><div class="big">~14<span style="font-size:1rem">min</span></div><div class="lab">face to face</div><p>One examiner, recorded. Four criteria, each worth 25% of your band.</p></div>
+        </div>
+      </section>
+
+      <!-- ---------- S0 HOW IT IS SCORED ---------- -->
+      <section class="section" id="s-intro">
+        <div class="section-head">
+          <span class="eyebrow">00 · The rules of the game</span>
+          <h2>How Speaking is scored</h2>
+          <p>Four equally-weighted criteria, averaged into your Speaking band. You can&rsquo;t hide
+            a weak one — and most learners neglect the same one. Internalise these four habits
+            before any vocabulary.</p>
+        </div>
+        <div class="principles" id="sPrinciples"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S1 THE FOUR CRITERIA ---------- -->
+      <section class="section" id="s-criteria">
+        <div class="section-head">
+          <span class="eyebrow">S1 · What earns the marks</span>
+          <h2>The four criteria</h2>
+          <p>What separates band 6 from band 8 on each. Read these as a checklist you can run
+            over a recording of your own speech.</p>
+        </div>
+        <div class="crit-grid" id="sCriteria"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S2 TECHNIQUES ---------- -->
+      <section class="section" id="s-technique">
+        <div class="section-head">
+          <span class="eyebrow">S2 · The moves that lift a band</span>
+          <h2>High-score techniques</h2>
+          <p>Concrete, repeatable moves — each tied to the criterion it raises. Drill them until
+            they&rsquo;re automatic, so you don&rsquo;t have to think about them on the day.</p>
+        </div>
+        <div class="pattern-grid" id="sTechniques"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S3 POWER STRUCTURES ---------- -->
+      <section class="section" id="s-structures">
+        <div class="section-head">
+          <span class="eyebrow">S3 · The sentences that score</span>
+          <h2>Power structures</h2>
+          <p>Spoken frames that show grammatical range without sounding rehearsed. Learn the
+            <b>shape</b>, then drop your own ideas into it — each one is mapped to the part it
+            fits best.</p>
+        </div>
+        <div id="sStructures"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- THE THREE PARTS ---------- -->
+      <section class="section" id="s-parts">
+        <div class="section-head">
+          <span class="eyebrow">The three parts</span>
+          <h2>Speaking, part by part</h2>
+          <p>Each part gets three views: the <b>approach</b> (how to attack it), the
+            <b>structure</b> (a paragraph-style blueprint for your answer), and the
+            <b>pitfalls</b> built for it. Tabs switch the view.</p>
+        </div>
+        <div id="sParts"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S4 PRACTICE ROUTINE ---------- -->
+      <section class="section" id="s-practice">
+        <div class="section-head">
+          <span class="eyebrow">S4 · How to train</span>
+          <h2>Practice routine</h2>
+          <p>Speaking improves from hours of <b>talking</b>, recorded and reviewed — not from
+            reading about talking. These drills build fluency, pronunciation and range. Make a
+            daily and weekly rhythm from them.</p>
+        </div>
+        <div id="sPractice"><!-- injected by JS --></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S5 COMMON MISTAKES ---------- -->
+      <section class="section" id="s-mistakes">
+        <div class="section-head">
+          <span class="eyebrow">S5 · Know the enemy</span>
+          <h2>Common mistakes</h2>
+          <p>The recurring habits that cap a Speaking score below band 8. Each one is avoidable
+            once you can hear it in your own recordings.</p>
+        </div>
+        <div class="card"><ul class="traps" id="sMistakes"><!-- injected by JS --></ul></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ---------- S6 LANGUAGE BANK ---------- -->
+      <section class="section" id="s-lang">
+        <div class="section-head">
+          <span class="eyebrow">S6 · The raw material</span>
+          <h2>Language bank</h2>
+          <p>Reusable spoken phrases grouped by <b>what they do</b> — buy time, give an opinion,
+            agree, speculate, narrate. Tap a card to drill it as a flashcard; spaced repetition
+            is on, same as the other banks.</p>
+        </div>
+        <div class="vocab-tools">
+          <label class="vocab-search">
+            <span class="sr-only">Search phrases</span>
+            <input type="search" id="sLangSearch" placeholder="Search a function or phrase — e.g. opinion, time, agree&hellip;" autocomplete="off" />
+          </label>
+          <div class="chips" id="sLangChips" role="group" aria-label="Filter by function"></div>
+        </div>
+        <div class="vocab-count" id="sLangCount"></div>
+        <div class="vocab-grid" id="sLangGrid"><!-- injected by JS --></div>
+        <p class="vocab-empty" id="sLangEmpty" hidden>No match — try a broader term, or clear the filter.</p>
+      </section>
+
+     </div><!-- /view speaking -->
 
      <!-- ========================================================= -->
      <!-- ==================  TOEIC LISTENING  ==================== -->
@@ -664,7 +862,7 @@
 
   <footer class="foot">
     <span>The Band 8 Casebook — a study tool, not affiliated with IELTS / the British Council, IDP or Cambridge.</span>
-    <span>Reading + Writing · evidence and the page · v2.0</span>
+    <span>IELTS Reading · Writing · Speaking + TOEIC · v2.1</span>
   </footer>
 
   <script src="js/cases.js"></script>
@@ -672,6 +870,7 @@
   <script src="js/extras.js"></script>
   <script src="js/writing.js"></script>
   <script src="js/models.js"></script>
+  <script src="js/speaking.js"></script>
   <script src="js/toeic.js"></script>
   <script src="js/main.js"></script>
   <script src="js/srs.js"></script>

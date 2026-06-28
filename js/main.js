@@ -428,15 +428,55 @@
     });
   })();
 
-  /* ---------- Reading / Writing mode switch ---------- */
+  /* ---------- TOEIC: Listening & Reading parts ---------- */
+  function fmtHTML(essence, format) {
+    return (essence ? '<p class="toeic-essence">' + essence + "</p>" : "") +
+      '<ul class="fmt">' + format.map(function (f) {
+        return '<li><span class="fk">' + f.k + '</span><span class="fv">' + f.v + "</span></li>";
+      }).join("") + "</ul>";
+  }
+  function toeicCaseHTML(c) {
+    const base = "tt-" + c.id;
+    return (
+      '<article class="case" id="tcase-' + c.id + '">' +
+        '<div class="case-head">' +
+          '<div class="case-no">' + c.no + "</div>" +
+          '<div class="case-title"><h3>' + c.title + "</h3><div class=\"alias\">" + c.alias + "</div></div>" +
+          '<div class="case-meta"><span class="order seq">' + c.meta + "</span></div>" +
+        "</div>" +
+        '<p style="padding:1.1rem clamp(1.1rem,3vw,1.8rem) 0;margin:0;color:var(--text-soft);max-width:70ch">' + c.blurb + "</p>" +
+        '<div class="tabs" role="tablist" aria-label="' + c.title + ' views">' +
+          '<button class="tab" role="tab" aria-selected="true" id="' + base + '-f" aria-controls="' + base + '-fp" data-target="' + base + '-fp">Format</button>' +
+          '<button class="tab" role="tab" aria-selected="false" id="' + base + '-s" aria-controls="' + base + '-sp" data-target="' + base + '-sp">Strategy</button>' +
+          '<button class="tab" role="tab" aria-selected="false" id="' + base + '-t" aria-controls="' + base + '-tp" data-target="' + base + '-tp">Traps <span class="dot">&bull;</span></button>' +
+        "</div>" +
+        '<div class="panel" role="tabpanel" id="' + base + '-fp" aria-labelledby="' + base + '-f">' + fmtHTML(c.essence, c.format) + "</div>" +
+        '<div class="panel" role="tabpanel" id="' + base + '-sp" aria-labelledby="' + base + '-s" hidden>' + stepsHTML(c.tips) + "</div>" +
+        '<div class="panel" role="tabpanel" id="' + base + '-tp" aria-labelledby="' + base + '-t" hidden>' + trapsHTML(c.traps) + "</div>" +
+      "</article>"
+    );
+  }
+  if (window.TOEIC) {
+    const lc = $("#toeicLcParts"); if (lc) lc.innerHTML = TOEIC.lc.map(toeicCaseHTML).join("");
+    const rc = $("#toeicRcParts"); if (rc) rc.innerHTML = TOEIC.rc.map(toeicCaseHTML).join("");
+    const navLink = function (c) { return '<a href="#tcase-' + c.id + '"><span class="idx">' + c.no + "</span> " + c.title + "</a>"; };
+    const nLc = $("#navTLC"); if (nLc) nLc.insertAdjacentHTML("beforeend", TOEIC.lc.map(navLink).join(""));
+    const nRc = $("#navTRC"); if (nRc) nRc.insertAdjacentHTML("beforeend", TOEIC.rc.map(navLink).join(""));
+  }
+
+  /* ---------- section mode switch (IELTS R/W · TOEIC L/R) ---------- */
   (function modeSwitch() {
     const btns = $$(".mode-btn");
     if (!btns.length) return;
-    $$(".view").forEach(function (v) { v.removeAttribute("hidden"); });
+    const views = $$(".view"), navs = $$(".nav-mode");
+    const valid = btns.map(function (b) { return b.getAttribute("data-mode"); });
     const KEY = "band8-mode";
     function set(mode) {
+      if (valid.indexOf(mode) === -1) mode = "reading";
       document.body.setAttribute("data-mode", mode);
       btns.forEach(function (b) { b.setAttribute("aria-selected", String(b.getAttribute("data-mode") === mode)); });
+      views.forEach(function (v) { v.hidden = v.getAttribute("data-view") !== mode; });
+      navs.forEach(function (n) { n.hidden = n.getAttribute("data-mode") !== mode; });
       try { localStorage.setItem(KEY, mode); } catch (e) {}
     }
     btns.forEach(function (b) {

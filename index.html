@@ -19,11 +19,13 @@
     <div class="brand">
       <img class="brand-logo" src="assets/logo.png" alt="" width="30" height="30" />
       <strong>The Band 8 Casebook</strong>
-      <span>IELTS Academic</span>
+      <span>IELTS · TOEIC</span>
     </div>
-    <div class="mode-switch" role="tablist" aria-label="Skill">
-      <button class="mode-btn" role="tab" data-mode="reading" aria-selected="true">Reading</button>
-      <button class="mode-btn" role="tab" data-mode="writing" aria-selected="false">Writing</button>
+    <div class="mode-switch" role="tablist" aria-label="Section">
+      <button class="mode-btn" role="tab" data-mode="reading" aria-selected="true" title="IELTS Reading">IELTS R</button>
+      <button class="mode-btn" role="tab" data-mode="writing" aria-selected="false" title="IELTS Writing">IELTS W</button>
+      <button class="mode-btn" role="tab" data-mode="toeic-lc" aria-selected="false" title="TOEIC Listening">TOEIC L</button>
+      <button class="mode-btn" role="tab" data-mode="toeic-rc" aria-selected="false" title="TOEIC Reading">TOEIC R</button>
     </div>
     <div class="topbar-right">
       <div class="band-chip">TARGET BAND 8.0</div>
@@ -57,7 +59,7 @@
           </div>
         </div>
 
-        <div class="nav-mode" data-mode="writing">
+        <div class="nav-mode" data-mode="writing" hidden>
           <div class="nav-group">
             <p class="nav-group-title">Foundations</p>
             <a href="#w-intro"><span class="idx">00</span> How Writing is scored</a>
@@ -74,6 +76,28 @@
           <div class="nav-group" id="navWT2">
             <p class="nav-group-title">Task 2 · essay</p>
             <!-- task 2 case links injected by JS -->
+          </div>
+        </div>
+
+        <div class="nav-mode" data-mode="toeic-lc" hidden>
+          <div class="nav-group">
+            <p class="nav-group-title">Overview</p>
+            <a href="#tlc-intro"><span class="idx">00</span> The Listening test</a>
+          </div>
+          <div class="nav-group" id="navTLC">
+            <p class="nav-group-title">Parts</p>
+            <!-- LC part links injected by JS -->
+          </div>
+        </div>
+
+        <div class="nav-mode" data-mode="toeic-rc" hidden>
+          <div class="nav-group">
+            <p class="nav-group-title">Overview</p>
+            <a href="#trc-intro"><span class="idx">00</span> The Reading test</a>
+          </div>
+          <div class="nav-group" id="navTRC">
+            <p class="nav-group-title">Parts</p>
+            <!-- RC part links injected by JS -->
           </div>
         </div>
 
@@ -536,6 +560,99 @@
 
      </div><!-- /view writing -->
 
+     <!-- ========================================================= -->
+     <!-- ==================  TOEIC LISTENING  ==================== -->
+     <!-- ========================================================= -->
+     <div class="view" data-view="toeic-lc" hidden>
+      <section class="hero">
+        <span class="eyebrow">TOEIC · Listening</span>
+        <h1>It plays <em>once</em> &mdash; be ready before it does.</h1>
+        <p class="lede">
+          TOEIC Listening rewards preparation, not raw comprehension. The questions are
+          printed and the audio never repeats, so the whole game is knowing each part&rsquo;s
+          format and reading ahead. Here is how all four parts work, what they really test,
+          and the traps built into each.</p>
+        <div class="timing">
+          <div class="cell"><div class="big">100</div><div class="lab">questions</div><p>Parts 1&ndash;4, multiple choice, answered on a separate sheet.</p></div>
+          <div class="cell"><div class="big">~45<span style="font-size:1rem">min</span></div><div class="lab">fixed audio</div><p>The recording sets the pace &mdash; you cannot pause or replay it.</p></div>
+          <div class="cell"><div class="big">4</div><div class="lab">parts</div><p>Photos · Question&ndash;Response · Conversations · Talks.</p></div>
+          <div class="cell"><div class="big">5&ndash;495</div><div class="lab">scaled score</div><p>Listening + Reading combine to a total out of 990.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="tlc-intro">
+        <div class="section-head">
+          <span class="eyebrow">00 · How to play it</span>
+          <h2>The Listening test</h2>
+          <p>Four short habits decide most of your Listening score &mdash; long before vocabulary does.</p>
+        </div>
+        <div class="principles">
+          <div class="principle"><span class="n">L-01</span><h4>It plays once</h4><p>There is no replay and no going back. If you miss one, let it go and lock onto the next &mdash; don&rsquo;t lose two questions chasing one.</p></div>
+          <div class="principle"><span class="n">L-02</span><h4>Read ahead</h4><p>In Parts 3&ndash;4 the questions are printed. Read them during the directions and pauses so you know exactly what to listen for.</p></div>
+          <div class="principle"><span class="n">L-03</span><h4>Never leave blanks</h4><p>There is no penalty for a wrong answer. If unsure, eliminate and guess &mdash; always fill a bubble.</p></div>
+          <div class="principle"><span class="n">L-04</span><h4>Predict, then confirm</h4><p>Use the photo / question to pre-load likely vocabulary, then listen to confirm rather than decode from scratch.</p></div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <section class="section" id="toeic-lc-parts">
+        <div class="section-head">
+          <span class="eyebrow">The four parts</span>
+          <h2>Listening, part by part</h2>
+          <p>Each part has three views: the <b>format</b> (what you do + what it really tests),
+            the <b>strategy</b> (how to attack it), and the <b>traps</b> built for it.</p>
+        </div>
+        <div id="toeicLcParts"><!-- injected by JS --></div>
+      </section>
+     </div><!-- /view toeic-lc -->
+
+     <!-- ========================================================= -->
+     <!-- ===================  TOEIC READING  ==================== -->
+     <!-- ========================================================= -->
+     <div class="view" data-view="toeic-rc" hidden>
+      <section class="hero">
+        <span class="eyebrow">TOEIC · Reading</span>
+        <h1>The clock is the <em>real</em> test.</h1>
+        <p class="lede">
+          75 minutes, 100 questions, and you set your own pace. Most points are lost to time,
+          not difficulty &mdash; bank speed on the grammar parts to survive Part 7. Here is each
+          part&rsquo;s format, what it tests, how to pace it, and the traps to expect.</p>
+        <div class="timing">
+          <div class="cell"><div class="big">100</div><div class="lab">questions</div><p>Parts 5&ndash;7, multiple choice, self-paced.</p></div>
+          <div class="cell"><div class="big">75<span style="font-size:1rem">min</span></div><div class="lab">you manage it</div><p>No audio clock &mdash; budgeting time yourself is the core skill.</p></div>
+          <div class="cell"><div class="big">3</div><div class="lab">parts</div><p>Incomplete Sentences · Text Completion · Reading Comprehension.</p></div>
+          <div class="cell"><div class="big">5&ndash;495</div><div class="lab">scaled score</div><p>Part 7 carries 54 of the 100 questions &mdash; protect time for it.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="trc-intro">
+        <div class="section-head">
+          <span class="eyebrow">00 · How to play it</span>
+          <h2>The Reading test</h2>
+          <p>Reading is a race against the clock. These four habits keep you from running out.</p>
+        </div>
+        <div class="principles">
+          <div class="principle"><span class="n">R-01</span><h4>Bank time early</h4><p>Spend ~20&ndash;30s per Part 5 item and move. The minutes you save are what get you through Part 7.</p></div>
+          <div class="principle"><span class="n">R-02</span><h4>Protect Part 7</h4><p>Part 7 is 54 questions. Leave it ~50&ndash;55 minutes; never let Parts 5&ndash;6 eat that time.</p></div>
+          <div class="principle"><span class="n">R-03</span><h4>Never leave blanks</h4><p>No penalty for wrong answers &mdash; bubble every question, even the ones you skip and guess.</p></div>
+          <div class="principle"><span class="n">R-04</span><h4>Questions first, then scan</h4><p>Read the questions, then hunt the text by paraphrase. Flag a hard item and keep moving.</p></div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <section class="section" id="toeic-rc-parts">
+        <div class="section-head">
+          <span class="eyebrow">The three parts</span>
+          <h2>Reading, part by part</h2>
+          <p>Each part has three views: the <b>format</b> (what you do + what it really tests),
+            the <b>strategy</b> (how to attack it), and the <b>traps</b> built for it.</p>
+        </div>
+        <div id="toeicRcParts"><!-- injected by JS --></div>
+      </section>
+     </div><!-- /view toeic-rc -->
+
     </main>
   </div>
 
@@ -549,6 +666,7 @@
   <script src="js/extras.js"></script>
   <script src="js/writing.js"></script>
   <script src="js/models.js"></script>
+  <script src="js/toeic.js"></script>
   <script src="js/main.js"></script>
   <script src="js/srs.js"></script>
   <script src="js/firebase-config.js"></script>

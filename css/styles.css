@@ -136,7 +136,7 @@ body::before {
   flex: none;
 }
 .brand strong { align-self: center; }
-.brand strong { color: var(--accent); font-weight: 600; }
+.brand strong { color: #0f5c57; font-weight: 600; }  /* brand teal, constant across modes */
 .brand span { color: var(--text-faint); }
 .band-chip {
   font-family: var(--mono);
@@ -174,7 +174,12 @@ body::before {
 }
 .mode-btn[aria-selected="true"] { background: var(--accent); color: #fff; }
 .mode-btn:hover:not([aria-selected="true"]) { color: var(--text); }
+.mode-switch { flex-wrap: wrap; }
 @media (max-width: 760px) { .topbar .band-chip { display: none; } }
+@media (max-width: 620px) {
+  .topbar { flex-wrap: wrap; row-gap: 0.5rem; }
+  .mode-switch { order: 3; flex-basis: 100%; justify-content: center; }
+}
 @media (max-width: 560px) { .brand span { display: none; } .mode-btn { padding: 0.42rem 0.7rem; } }
 
 /* ---------- sign-in / sync button ---------- */
@@ -200,28 +205,27 @@ body::before {
 .auth-btn:disabled { opacity: 0.5; cursor: default; }
 .auth-btn.signed-in { border-color: var(--accent); color: var(--accent); }
 
-/* view + nav swapping by mode (default = reading) */
-.view[data-view="writing"] { display: none; }
-body[data-mode="writing"] .view[data-view="writing"] { display: block; }
-body[data-mode="writing"] .view[data-view="reading"] { display: none; }
-.nav-mode[data-mode="writing"] { display: none; }
-body[data-mode="writing"] .nav-mode[data-mode="writing"] { display: block; }
-body[data-mode="writing"] .nav-mode[data-mode="reading"] { display: none; }
+/* view + nav swapping by mode — JS toggles the [hidden] attribute */
+.view[hidden], .nav-mode[hidden] { display: none; }
 
-/* Writing wears a different accent: deep indigo (ink) instead of teal.
-   Everything derives from --accent, so re-pointing it recolours the whole
-   Writing view + chrome. Semantic colours (trap red, band-8 green) stay. */
-body[data-mode="writing"] {
+/* Each section wears its own accent (everything derives from --accent).
+   Semantic colours (trap red, band-8 green) stay fixed. */
+body[data-mode="writing"] {            /* IELTS Writing — deep indigo (ink) */
   --accent: #3d3f92;
   --accent-deep: #2b2c68;
   --accent-soft: #e4e4f3;
   --high-mark-2: rgba(61, 63, 146, 0.16);
 }
+body[data-mode="toeic-lc"],            /* TOEIC — plum */
+body[data-mode="toeic-rc"] {
+  --accent: #8e3a6b;
+  --accent-deep: #5f2647;
+  --accent-soft: #f1e2ec;
+  --high-mark-2: rgba(142, 58, 107, 0.16);
+}
 body[data-mode="writing"] .kbox { border-color: #c8c9ea; }
 body[data-mode="writing"] .srs-cam { border-color: #c8c9ea; }
 body[data-mode="writing"] .kbox.warn { border-color: #e6bcb1; }
-/* brand stays teal (constant identity) to match the logo, even in Writing */
-body[data-mode="writing"] .brand strong { color: #0f5c57; }
 
 /* ---------- Writing: criteria cards ---------- */
 .crit-grid {
@@ -289,6 +293,16 @@ body[data-mode="writing"] .brand strong { color: #0f5c57; }
 }
 .blueprint .bp-detail { font-size: 0.96rem; color: var(--text-soft); line-height: 1.55; }
 .blueprint .bp-detail b { color: var(--text); font-weight: 600; }
+
+/* TOEIC format spec sheet (the Format tab) */
+.toeic-essence { font-size: 1rem; color: var(--text-soft); line-height: 1.6; margin: 0 0 1rem; }
+.fmt { list-style: none; margin: 0; padding: 0; }
+.fmt li { display: grid; grid-template-columns: 9rem 1fr; gap: 0.4rem 1rem; padding: 0.55rem 0; align-items: baseline; }
+.fmt li + li { border-top: 1px dashed var(--hair-strong); }
+.fmt .fk { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.fmt .fv { font-size: 0.96rem; color: var(--text-soft); }
+.fmt .fv b { color: var(--text); }
+@media (max-width: 520px) { .fmt li { grid-template-columns: 1fr; gap: 0.1rem; } }
 @media (max-width: 560px) {
   .blueprint li { padding-left: 0; }
   .blueprint .bp-part { position: static; width: auto; display: block; margin-bottom: 0.2rem; }

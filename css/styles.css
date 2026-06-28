@@ -134,10 +134,24 @@ body::before {
   width: 30px;
   display: block;
   flex: none;
-  background-color: var(--accent);          /* recoloured to the current section's primary */
   -webkit-mask: url(../assets/logo.png) center / contain no-repeat;
   mask: url(../assets/logo.png) center / contain no-repeat;
-  transition: background-color 0.18s;
+  /* brushed white-silver, with a metallic glint that sweeps across (the
+     centre star catches the most light) */
+  background-image: linear-gradient(110deg,
+    #6f757e 0%, #b9bec7 24%, #ffffff 42%, #eef1f5 50%,
+    #ffffff 58%, #a2a8b1 76%, #6a7079 100%);
+  background-repeat: no-repeat;
+  background-size: 240% 100%;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.28));
+  animation: logo-sheen 4s ease-in-out infinite;
+}
+@keyframes logo-sheen {
+  0%, 100% { background-position: 100% 50%; }
+  50%      { background-position: 0% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo { animation: none; background-position: 32% 50%; }
 }
 .brand strong { align-self: center; }
 /* "8bit" wordmark — Space Grotesk, lowercase, in the current section's primary */

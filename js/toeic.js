@@ -22,6 +22,14 @@ const TOEIC = {
         { k: "On the page", v: "the photo only &mdash; choices are not printed" },
         { k: "Tests", v: "vocabulary for people&rsquo;s actions, objects, and locations" }
       ],
+      types: [
+        { name: "Office / meeting", ex: "people typing, reviewing papers, seated around a table, giving a presentation." },
+        { name: "Factory / warehouse", ex: "loading boxes, operating a machine, wearing hard hats, goods stacked on shelves." },
+        { name: "Street / transport", ex: "pedestrians crossing, vehicles parked in a row, a road under construction." },
+        { name: "Store / restaurant", ex: "a customer browsing, a server pouring water, merchandise on display." },
+        { name: "1-person vs no-person", ex: "one person &rarr; expect &lsquo;He/She is V-ing&rsquo;; empty scene &rarr; expect &lsquo;there is/are&rsquo; or a passive state." },
+        { name: "Statement grammar", ex: "present continuous (action) · &lsquo;is being + pp&rsquo; (action on an object) · &lsquo;has been + pp&rsquo; (finished state)." }
+      ],
       tips: [
         { t: "<b>Study the photo before the audio starts.</b> Ask: who? what action? where?", ex: "Pre-load likely words: a worker, a desk, holding, leaning, on the wall." },
         { t: "Decide if it is a <b>people photo</b> (focus on actions) or a <b>scene/object photo</b> (focus on location/state).", ex: "People &rarr; &lsquo;She is typing&rsquo;. Objects &rarr; &lsquo;Chairs are arranged in rows&rsquo;." },
@@ -44,6 +52,16 @@ const TOEIC = {
         { k: "Audio", v: "a prompt + 3 responses, spoken once" },
         { k: "On the page", v: "nothing at all" },
         { k: "Tests", v: "WH- vs Yes/No vs tag questions, and indirect replies" }
+      ],
+      types: [
+        { name: "WH- question", ex: "&lsquo;Where&rsquo;s the meeting?&rsquo; &rarr; a place; a Yes/No reply is impossible." },
+        { name: "Yes/No question", ex: "&lsquo;Has the order shipped?&rsquo; &rarr; Yes/No, or an indirect &lsquo;I&rsquo;ll check.&rsquo;" },
+        { name: "Tag question", ex: "&lsquo;You&rsquo;ve met Sara, haven&rsquo;t you?&rsquo; &rarr; confirm or deny." },
+        { name: "Negative question", ex: "&lsquo;Isn&rsquo;t the office closed today?&rsquo; &rarr; answer the fact; ignore the &lsquo;not&rsquo;." },
+        { name: "Choice / alternative", ex: "&lsquo;Monday or Tuesday?&rsquo; &rarr; pick one, or &lsquo;Either works for me.&rsquo;" },
+        { name: "Request / offer / suggestion", ex: "&lsquo;Could you send the file?&rsquo; &rarr; &lsquo;Sure, right away.&rsquo;" },
+        { name: "Statement (not a question)", ex: "&lsquo;The printer&rsquo;s out of ink.&rsquo; &rarr; offer help or react." },
+        { name: "Indirect / embedded", ex: "&lsquo;Do you know when it opens?&rsquo; &rarr; the time, or &lsquo;Let me find out.&rsquo;" }
       ],
       tips: [
         { t: "<b>Lock onto the first word</b> (Who / Where / When / Why / How / Do / Are / Have&hellip;).", ex: "It tells you what kind of answer is even possible." },
@@ -68,6 +86,17 @@ const TOEIC = {
         { k: "Graphics", v: "some sets show a table / map / schedule" },
         { k: "On the page", v: "the 3 questions + options (+ any graphic)" }
       ],
+      types: [
+        { name: "Topic / gist", ex: "&lsquo;What are the speakers mainly discussing?&rsquo;" },
+        { name: "Purpose", ex: "&lsquo;Why is the man calling?&rsquo;" },
+        { name: "Speaker / place", ex: "&lsquo;Where do the speakers most likely work?&rsquo;" },
+        { name: "Specific detail", ex: "&lsquo;What time will the delivery arrive?&rsquo;" },
+        { name: "Inference", ex: "&lsquo;What is suggested about the new policy?&rsquo;" },
+        { name: "Intent (why say)", ex: "&lsquo;Why does the woman say, &ldquo;That&rsquo;s a tall order&rdquo;?&rsquo;" },
+        { name: "Next action", ex: "&lsquo;What will the man probably do next?&rsquo;" },
+        { name: "Graphic-linked", ex: "&lsquo;Look at the graphic. Which room will they use?&rsquo;" },
+        { name: "Scenarios", ex: "two colleagues, a customer&ndash;service call, a three-person discussion, or a set with a chart." }
+      ],
       tips: [
         { t: "<b>Read the three questions before the audio</b> and predict what to listen for.", ex: "Underline keywords: &lsquo;Why is the man calling?&rsquo;, &lsquo;What will the woman do next?&rsquo;" },
         { t: "Questions follow the <b>conversation order</b> (Q1 = early, Q3 = late).", ex: "Q1 &lsquo;What is the problem?&rsquo; (start) &rarr; Q3 &lsquo;What will the man do next?&rsquo; (end)." },
@@ -90,6 +119,16 @@ const TOEIC = {
         { k: "Speaker", v: "one (announcement, voicemail, news, advert, tour&hellip;)" },
         { k: "Graphics", v: "some talks show a visual" },
         { k: "On the page", v: "the 3 questions + options (+ any graphic)" }
+      ],
+      types: [
+        { name: "Announcement", ex: "airport / station / store PA: &lsquo;Attention passengers&hellip;&rsquo;" },
+        { name: "Voicemail / phone message", ex: "&lsquo;Hi, this is Tom from&hellip; I&rsquo;m calling about&hellip;&rsquo;" },
+        { name: "Broadcast", ex: "a radio news, weather or traffic report." },
+        { name: "Advertisement", ex: "&lsquo;Visit us this weekend for&hellip;&rsquo; promoting a product or service." },
+        { name: "Tour / guided talk", ex: "&lsquo;Welcome to&hellip; On your left you&rsquo;ll see&hellip;&rsquo;" },
+        { name: "Meeting excerpt", ex: "a manager briefing staff on a change or plan." },
+        { name: "Speaker introduction", ex: "&lsquo;It&rsquo;s my pleasure to introduce&hellip;&rsquo; at an event." },
+        { name: "Instructions / training", ex: "how to use a machine or follow a procedure." }
       ],
       tips: [
         { t: "<b>Identify the talk type from the first sentence</b> (speaker, audience, place).", ex: "&lsquo;Attention shoppers&hellip;&rsquo; = store announcement; &lsquo;You&rsquo;ve reached&hellip;&rsquo; = voicemail." },

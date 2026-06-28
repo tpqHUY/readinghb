@@ -355,6 +355,20 @@ body[data-mode^="toeic-"] .case-no {
 .fmt .fv { font-size: 0.96rem; color: var(--text-soft); }
 .fmt .fv b { color: var(--text); }
 @media (max-width: 520px) { .fmt li { grid-template-columns: 1fr; gap: 0.1rem; } }
+
+/* TOEIC question/talk sub-types (the Types tab) */
+.qtypes { list-style: none; margin: 0; padding: 0; }
+.qtypes li { padding: 0.6rem 0; font-size: 0.96rem; color: var(--text-soft); line-height: 1.55; }
+.qtypes li + li { border-top: 1px dashed var(--hair-strong); }
+.qtypes .qt {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
 @media (max-width: 560px) {
   .blueprint li { padding-left: 0; }
   .blueprint .bp-part { position: static; width: auto; display: block; margin-bottom: 0.2rem; }

@@ -435,8 +435,24 @@
         return '<li><span class="fk">' + f.k + '</span><span class="fv">' + f.v + "</span></li>";
       }).join("") + "</ul>";
   }
+  function typesHTML(types) {
+    return '<ul class="qtypes">' + types.map(function (t) {
+      return '<li><span class="qt">' + t.name + "</span> " + t.ex + "</li>";
+    }).join("") + "</ul>";
+  }
   function toeicCaseHTML(c) {
     const base = "tt-" + c.id;
+    const hasTypes = c.types && c.types.length;
+    const tabs =
+      '<button class="tab" role="tab" aria-selected="true" id="' + base + '-f" aria-controls="' + base + '-fp" data-target="' + base + '-fp">Format</button>' +
+      (hasTypes ? '<button class="tab" role="tab" aria-selected="false" id="' + base + '-y" aria-controls="' + base + '-yp" data-target="' + base + '-yp">Types</button>' : "") +
+      '<button class="tab" role="tab" aria-selected="false" id="' + base + '-s" aria-controls="' + base + '-sp" data-target="' + base + '-sp">Strategy</button>' +
+      '<button class="tab" role="tab" aria-selected="false" id="' + base + '-t" aria-controls="' + base + '-tp" data-target="' + base + '-tp">Traps <span class="dot">&bull;</span></button>';
+    const panels =
+      '<div class="panel" role="tabpanel" id="' + base + '-fp" aria-labelledby="' + base + '-f">' + fmtHTML(c.essence, c.format) + "</div>" +
+      (hasTypes ? '<div class="panel" role="tabpanel" id="' + base + '-yp" aria-labelledby="' + base + '-y" hidden>' + typesHTML(c.types) + "</div>" : "") +
+      '<div class="panel" role="tabpanel" id="' + base + '-sp" aria-labelledby="' + base + '-s" hidden>' + stepsHTML(c.tips) + "</div>" +
+      '<div class="panel" role="tabpanel" id="' + base + '-tp" aria-labelledby="' + base + '-t" hidden>' + trapsHTML(c.traps) + "</div>";
     return (
       '<article class="case" id="tcase-' + c.id + '">' +
         '<div class="case-head">' +
@@ -445,14 +461,8 @@
           '<div class="case-meta"><span class="order seq">' + c.meta + "</span></div>" +
         "</div>" +
         '<p style="padding:1.1rem clamp(1.1rem,3vw,1.8rem) 0;margin:0;color:var(--text-soft);max-width:70ch">' + c.blurb + "</p>" +
-        '<div class="tabs" role="tablist" aria-label="' + c.title + ' views">' +
-          '<button class="tab" role="tab" aria-selected="true" id="' + base + '-f" aria-controls="' + base + '-fp" data-target="' + base + '-fp">Format</button>' +
-          '<button class="tab" role="tab" aria-selected="false" id="' + base + '-s" aria-controls="' + base + '-sp" data-target="' + base + '-sp">Strategy</button>' +
-          '<button class="tab" role="tab" aria-selected="false" id="' + base + '-t" aria-controls="' + base + '-tp" data-target="' + base + '-tp">Traps <span class="dot">&bull;</span></button>' +
-        "</div>" +
-        '<div class="panel" role="tabpanel" id="' + base + '-fp" aria-labelledby="' + base + '-f">' + fmtHTML(c.essence, c.format) + "</div>" +
-        '<div class="panel" role="tabpanel" id="' + base + '-sp" aria-labelledby="' + base + '-s" hidden>' + stepsHTML(c.tips) + "</div>" +
-        '<div class="panel" role="tabpanel" id="' + base + '-tp" aria-labelledby="' + base + '-t" hidden>' + trapsHTML(c.traps) + "</div>" +
+        '<div class="tabs" role="tablist" aria-label="' + c.title + ' views">' + tabs + "</div>" +
+        panels +
       "</article>"
     );
   }

@@ -1363,6 +1363,7 @@ ul.traps li .ex {
 .srs-qfeedback { font-family: var(--mono); font-size: 0.86rem; }
 .srs-qfeedback.good { color: #3E8E5A; }
 .srs-qfeedback.bad { color: var(--trap); }
+.srs-qfeedback.warn { color: #B5862F; }
 .srs-qfeedback b { font-family: var(--serif); font-style: normal; font-size: 1.05rem; }
 .srs-qfeedback .qex { display: block; font-family: var(--serif); font-style: italic; color: var(--text-soft); margin-top: 0.4rem; font-size: 0.95rem; }
 .srs-qtimer { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); flex: 1; text-align: left; }

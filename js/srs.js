@@ -596,10 +596,17 @@
     const fb = ov.querySelector(".srs-qfeedback"); fb.hidden = true; fb.innerHTML = ""; fb.className = "srs-qfeedback";
     ov.querySelector('[data-q="submit"]').textContent = "Check ›";
     setTimeout(function () { try { input.focus(); } catch (e) {} }, 40);
-    // blanks for the word length shown right away; first 2 letters after 5s,
-    // then 2 more every 10s, with a circular countdown to each reveal
-    const len = primaryForm(it.term).length;
     quiz.hintN = 0;
+    quiz.fullyRevealed = false;
+    // easily-confused pairs (only two words) get no letter hints
+    if (quiz.id.indexOf("c:") === 0) {
+      hint.hidden = true; hint.innerHTML = "";
+      stopRing();
+      return;
+    }
+    // blanks for the word length shown right away; first 2 letters after 5s,
+    // then 2 more every 5s, with a circular countdown to each reveal
+    const len = primaryForm(it.term).length;
     hint.hidden = false;
     hint.innerHTML = "<b>" + maskPrefix(it.term, 0) + "</b>";
     function scheduleReveal(ms) {
@@ -608,7 +615,7 @@
         quiz.hintN += 2;
         hint.innerHTML = "<b>" + maskPrefix(it.term, quiz.hintN) + "</b>";
         if (quiz.hintN < len) scheduleReveal(HINT_STEP_MS);
-        else stopRing();
+        else { quiz.fullyRevealed = true; stopRing(); }
       }, ms);
     }
     scheduleReveal(HINT_FIRST_MS);
@@ -626,15 +633,20 @@
     const it = quiz.items[quiz.i];
     const input = ov.querySelector(".srs-qinput");
     const ans = normAns(input.value);
-    const ok = ans !== "" && acceptable(it.term).indexOf(ans) !== -1;
+    const typedRight = ans !== "" && acceptable(it.term).indexOf(ans) !== -1;
+    const revealed = quiz.fullyRevealed === true;   // letting the word reveal fully = no credit
+    const ok = typedRight && !revealed;
     quiz.answered = true;
     input.disabled = true;
     if (ok) quiz.correct++;
     const fb = ov.querySelector(".srs-qfeedback");
     fb.hidden = false;
-    fb.className = "srs-qfeedback " + (ok ? "good" : "bad");
-    fb.innerHTML = (ok ? "✓ correct" : "✗ answer: <b>" + primaryForm(it.term) + "</b>") +
-      (it.example ? '<span class="qex">“' + it.example + "”</span>" : "");
+    let cls, msg;
+    if (typedRight && revealed) { cls = "warn"; msg = "✓ but the word was fully revealed — not counted"; }
+    else if (typedRight) { cls = "good"; msg = "✓ correct"; }
+    else { cls = "bad"; msg = "✗ answer: <b>" + primaryForm(it.term) + "</b>"; }
+    fb.className = "srs-qfeedback " + cls;
+    fb.innerHTML = msg + (it.example ? '<span class="qex">“' + it.example + "”</span>" : "");
     ov.querySelector(".srs-qscore").textContent = quiz.correct + " correct";
     const last = quiz.i >= quiz.items.length - 1;
     ov.querySelector('[data-q="submit"]').textContent = last ? "See result ›" : "Next ›";

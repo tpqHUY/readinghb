@@ -768,6 +768,15 @@
       applyAll();
       return JSON.parse(JSON.stringify(store));
     },
+    // REPLACE the whole store (no merge). Used when a different account signs
+    // in on the same browser, so one account's progress never bleeds into
+    // another's. Returns the new store.
+    replaceAll: function (remote) {
+      store = JSON.parse(JSON.stringify(remote || {}));
+      save();
+      applyAll();
+      return JSON.parse(JSON.stringify(store));
+    },
     // register a callback fired after every local change (study / reset)
     onChange: function (cb) { changeCb = cb; }
   };

@@ -14,6 +14,13 @@
   const SDK = "https://www.gstatic.com/firebasejs/10.12.0/";
   const btn = document.getElementById("authBtn");
 
+  // Who the local progress (localStorage) currently belongs to. localStorage is
+  // shared across all accounts on one browser, so we tag it with the signed-in
+  // uid to avoid merging one account's progress into another's.
+  const OWNER_KEY = "ielts-reading-owner-v1";
+  function getOwner() { try { return localStorage.getItem(OWNER_KEY); } catch (e) { return null; } }
+  function setOwner(v) { try { localStorage.setItem(OWNER_KEY, v); } catch (e) {} }
+
   function setBtn(text, opts) {
     if (!btn) return;
     btn.classList.remove("is-avatar", "is-initials");
@@ -180,16 +187,25 @@
       if (user) {
         uid = user.uid;
         setAvatar(user);
+        if (unsub) { unsub(); unsub = null; }
+        // Is this a DIFFERENT account than the one the local data belongs to?
+        const prevOwner = getOwner();
+        const switchingAccount = !!prevOwner && prevOwner !== uid;
+        setOwner(uid);
         try {
-          // one-time merge: pull remote, merge with local, write the union back
           const snap = await fs.getDoc(userRef());
           const remote = snap.exists() ? (snap.data().srs || {}) : {};
           applyingRemote = true;
-          const merged = window.SRS ? window.SRS.importRemote(remote) : remote;
+          // Switching to another account on this browser → load THIS account's
+          // data fresh (replace), so progress never mixes between accounts.
+          // Same account, or first sign-in claiming offline progress → merge.
+          const result = window.SRS
+            ? (switchingAccount ? window.SRS.replaceAll(remote) : window.SRS.importRemote(remote))
+            : remote;
           applyingRemote = false;
-          await fs.setDoc(userRef(), { srs: merged, updatedAt: Date.now() }, { merge: true });
+          await fs.setDoc(userRef(), { srs: result, updatedAt: Date.now() }, { merge: true });
         } catch (e) {
-          console.warn("[sync] initial merge failed:", e);
+          console.warn("[sync] initial sync failed:", e);
           applyingRemote = false;
         }
         // live updates from other devices

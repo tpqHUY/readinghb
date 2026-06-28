@@ -558,6 +558,26 @@ body[data-mode^="toeic-"] .srs-cam { border-color: #bfe1d0; }
 }
 .nav a.active .idx { color: var(--accent); }
 
+/* Coloured sidebar (desktop): a solid panel in the section's primary colour,
+   so the nav lifts clearly off the page. Each mode themes it via --accent;
+   text turns light for contrast. Mobile keeps the plain collapsible nav. */
+@media (min-width: 901px) {
+  .nav {
+    background: var(--accent);
+    border-radius: 14px;
+    padding: 1.5rem 1.3rem;
+    box-shadow: var(--shadow);
+    top: 84px;
+    max-height: calc(100vh - 100px);
+  }
+  .nav-group-title { color: rgba(255, 255, 255, 0.66); }
+  .nav a { color: rgba(255, 255, 255, 0.85); }
+  .nav a .idx { color: rgba(255, 255, 255, 0.55); }
+  .nav a:hover { color: #fff; }
+  .nav a.active { color: #fff; border-color: #fff; }
+  .nav a.active .idx { color: #fff; }
+}
+
 /* ---------- main column ---------- */
 .main { padding: 1.6rem 0 6rem; min-width: 0; }
 

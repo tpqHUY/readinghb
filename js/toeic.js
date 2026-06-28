@@ -126,9 +126,9 @@ const TOEIC = {
       ],
       traps: [
         { n: "Word-form trap.", d: "The right root word in the wrong form.", ex: "&lsquo;a successfully launch&rsquo; (adv) when a noun&rsquo;s slot needs &lsquo;success&rsquo;." },
-        { n: "Tempting but ungrammatical.", d: "A word that fits the meaning but not the structure.", ex: "" },
-        { n: "Preposition / phrasal-verb confusion.", d: "&lsquo;result in&rsquo; vs &lsquo;result from&rsquo;, &lsquo;depend on&rsquo;.", ex: "" },
-        { n: "&lsquo;Sounds right&rsquo; without checking.", d: "Trust the grammar evidence, not your ear.", ex: "" }
+        { n: "Tempting but ungrammatical.", d: "A word that fits the meaning but not the structure.", ex: "&lsquo;______ it rained, we went&rsquo; needs &lsquo;Although&rsquo; (+ clause), not &lsquo;Despite&rsquo; (+ noun)." },
+        { n: "Preposition / phrasal-verb confusion.", d: "&lsquo;result in&rsquo; vs &lsquo;result from&rsquo;, &lsquo;depend on&rsquo;.", ex: "&lsquo;The delay resulted ______ a strike&rsquo; &rarr; &lsquo;from&rsquo;, not &lsquo;in&rsquo;." },
+        { n: "&lsquo;Sounds right&rsquo; without checking.", d: "Trust the grammar evidence, not your ear.", ex: "&lsquo;informations&rsquo; sounds fine but is uncountable &rarr; &lsquo;information&rsquo;." }
       ]
     },
     {
@@ -142,16 +142,16 @@ const TOEIC = {
         { k: "Texts", v: "emails, memos, notices, short articles" }
       ],
       tips: [
-        { t: "<b>Read the whole text</b>, not just the line with the blank &mdash; this is the key difference from Part 5.", ex: "" },
+        { t: "<b>Read the whole text</b>, not just the line with the blank &mdash; this is the key difference from Part 5.", ex: "A blank verb&rsquo;s tense can depend on a date mentioned two sentences earlier." },
         { t: "For the <b>sentence-insertion</b>, check what comes before and after.", ex: "Look at pronouns, linkers and topic flow: does &lsquo;However&rsquo; / &lsquo;This&rsquo; fit here?" },
         { t: "Keep <b>tense and time consistent</b> across the passage.", ex: "An email about a past event keeps the past throughout." },
         { t: "Use cohesion devices to choose connectors.", ex: "Contrast &rarr; however / nevertheless; result &rarr; therefore; addition &rarr; moreover." }
       ],
       traps: [
-        { n: "Locally fine, globally wrong.", d: "A choice that is grammatical in its own line but breaks the passage&rsquo;s logic.", ex: "" },
-        { n: "Sentence-insertion that repeats or contradicts.", d: "It restates known info or clashes with the next line.", ex: "" },
-        { n: "Context tense error.", d: "Right tense for the sentence alone, wrong for the passage&rsquo;s timeline.", ex: "" },
-        { n: "Pronoun with no referent.", d: "An inserted sentence whose &lsquo;they / it / this&rsquo; points to nothing.", ex: "" }
+        { n: "Locally fine, globally wrong.", d: "A choice that is grammatical in its own line but breaks the passage&rsquo;s logic.", ex: "&lsquo;However&rsquo; is fine grammar but wrong if the next line continues rather than contrasts." },
+        { n: "Sentence-insertion that repeats or contradicts.", d: "It restates known info or clashes with the next line.", ex: "Inserting &lsquo;The store will open soon&rsquo; just before a line that says it is &lsquo;now open&rsquo;." },
+        { n: "Context tense error.", d: "Right tense for the sentence alone, wrong for the passage&rsquo;s timeline.", ex: "&lsquo;will ship&rsquo; reads fine, but the email says the order &lsquo;was sent yesterday&rsquo;." },
+        { n: "Pronoun with no referent.", d: "An inserted sentence whose &lsquo;they / it / this&rsquo; points to nothing.", ex: "&lsquo;They praised it&rsquo; inserted where no group has been named yet." }
       ]
     },
     {
@@ -171,12 +171,12 @@ const TOEIC = {
         { t: "<b>Manage time ruthlessly</b>: flag a hard question and move on; never sink 4 minutes into one item.", ex: "Do single passages first if multi-sets slow you down." }
       ],
       traps: [
-        { n: "Paraphrase distractor.", d: "An option reuses the passage&rsquo;s words but distorts the meaning; the right one paraphrases.", ex: "" },
+        { n: "Paraphrase distractor.", d: "An option reuses the passage&rsquo;s words but distorts the meaning; the right one paraphrases.", ex: "Text &lsquo;sales fell&rsquo; &rarr; trap &lsquo;sales rose&rsquo; (reuses &lsquo;sales&rsquo;, flips the meaning)." },
         { n: "NOT / EXCEPT questions.", d: "Invert your reading &mdash; tick the three that ARE stated; the leftover is the answer.", ex: "&lsquo;What is NOT mentioned as a benefit?&rsquo;" },
-        { n: "Wrong document.", d: "True information, but found in a different document than the question is about.", ex: "" },
-        { n: "Over-inference.", d: "A reasonable real-world conclusion the text never actually states.", ex: "" },
+        { n: "Wrong document.", d: "True information, but found in a different document than the question is about.", ex: "The price sits in the invoice, but the question asks the deadline from the email." },
+        { n: "Over-inference.", d: "A reasonable real-world conclusion the text never actually states.", ex: "&lsquo;The CEO will visit&rsquo; does not mean &lsquo;the company is in trouble&rsquo;." },
         { n: "Vocabulary-in-context.", d: "The common meaning of the word is the trap; the passage uses a secondary sense.", ex: "&lsquo;figure&rsquo; = number, not shape, in a report." },
-        { n: "The time sink.", d: "One dense triple-passage set can eat the time you need for ten easier questions.", ex: "" }
+        { n: "The time sink.", d: "One dense triple-passage set can eat the time you need for ten easier questions.", ex: "A triple set with a schedule + two emails can swallow 6&ndash;8 minutes." }
       ]
     }
   ]

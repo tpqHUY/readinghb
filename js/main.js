@@ -716,31 +716,68 @@
   const navLinks = $$(".nav a");
   const linkById = {};
   navLinks.forEach(function (a) {
-    const id = a.getAttribute("href").slice(1);
-    linkById[id] = a;
+    linkById[a.getAttribute("href").slice(1)] = a;
+    // wrap the label (everything after the .idx) in a .lbl span so the active
+    // "running border" can be drawn around just the text
+    if (!a.querySelector(".lbl")) {
+      const lbl = document.createElement("span");
+      lbl.className = "lbl";
+      Array.prototype.slice.call(a.childNodes).forEach(function (n) {
+        if (n.nodeType === 1 && n.classList && n.classList.contains("idx")) return;
+        lbl.appendChild(n);
+      });
+      a.appendChild(lbl);
+    }
   });
   const targets = navLinks
-    .map(function (a) {
-      return document.getElementById(a.getAttribute("href").slice(1));
-    })
+    .map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); })
     .filter(Boolean);
 
   if ("IntersectionObserver" in window && targets.length) {
     let activeId = null;
+    let jumpTo = null;      // set while a click-jump is scrolling; suppresses
+    let jumpTimer = null;   // the running-border on intermediate sections
+
+    function setActive(id) {
+      if (id === activeId) return;
+      if (activeId && linkById[activeId]) linkById[activeId].classList.remove("active");
+      activeId = id;
+      if (linkById[id]) linkById[id].classList.add("active");
+    }
+
     const spy = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            if (activeId && linkById[activeId]) linkById[activeId].classList.remove("active");
-            activeId = en.target.id;
-            if (linkById[activeId]) linkById[activeId].classList.add("active");
+          if (!en.isIntersecting) return;
+          const id = en.target.id;
+          if (jumpTo) {
+            // a click-jump is underway: ignore the sections we pass through so
+            // they don't animate; release once we land on the clicked target
+            if (id === jumpTo) { jumpTo = null; clearTimeout(jumpTimer); }
+            return;
           }
+          setActive(id);
         });
       },
       { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
     );
-    targets.forEach(function (t) {
-      spy.observe(t);
+    targets.forEach(function (t) { spy.observe(t); });
+
+    // clicking a nav link animates ONLY the clicked target; the smooth-scroll
+    // passes intermediate sections silently (jumpTo gates the observer).
+    navLinks.forEach(function (a) {
+      a.addEventListener("click", function () {
+        const id = a.getAttribute("href").slice(1);
+        if (!document.getElementById(id)) return;
+        jumpTo = id;
+        if (activeId && linkById[activeId] && activeId !== id) linkById[activeId].classList.remove("active");
+        a.classList.remove("active");
+        void a.offsetWidth;          // reflow so the draw transition restarts
+        activeId = id;
+        a.classList.add("active");
+        clearTimeout(jumpTimer);
+        jumpTimer = setTimeout(function () { jumpTo = null; }, 1600);  // safety release
+      });
     });
   }
 

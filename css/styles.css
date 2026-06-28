@@ -610,26 +610,42 @@ body[data-mode^="toeic-"] .srs-cam { border-color: #bfe1d0; }
 .nav a:hover { color: var(--text); }
 .nav a.active {
   color: var(--accent);
-  border-color: var(--accent);
   font-weight: 600;
 }
 .nav a.active .idx { color: var(--accent); }
 
-/* scroll-spy: when a section becomes active, its index marker spins once
-   then bounces up — a livelier "you are here" cue. Re-runs each time a new
-   section is reached (the class is removed/re-added by the observer). */
-.nav a .idx { transform-origin: center; will-change: transform; }
-.nav a.active .idx { animation: idx-spin-bounce 0.78s ease-out; }
-@keyframes idx-spin-bounce {
-  0%   { transform: rotate(0)      translateY(0)    scale(1); }
-  42%  { transform: rotate(360deg) translateY(0)    scale(1.2); }
-  62%  { transform: rotate(360deg) translateY(-8px) scale(1.2); }
-  78%  { transform: rotate(360deg) translateY(0)    scale(1.08); }
-  89%  { transform: rotate(360deg) translateY(-3px) scale(1.08); }
-  100% { transform: rotate(360deg) translateY(0)    scale(1); }
+/* scroll-spy: when a section becomes active, an outline "runs around" its
+   label — two pseudo-elements draw the four sides clockwise (top → right →
+   bottom → left). The transition lives only on the .active selector, so
+   removing .active hides the border instantly (no reverse) — only arrivals
+   animate. Colour follows the active text (accent, or white on the panel). */
+.nav a .lbl { position: relative; }
+.nav a .lbl::before,
+.nav a .lbl::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  width: 0; height: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+}
+.nav a .lbl::before { top: -3px; left: -7px; }
+.nav a .lbl::after  { right: -7px; bottom: -3px; }
+.nav a.active .lbl::before {
+  width: calc(100% + 14px); height: calc(100% + 6px);
+  border-top-color: currentColor;
+  border-right-color: currentColor;
+  transition: width 0.16s linear, height 0.16s linear 0.16s;
+}
+.nav a.active .lbl::after {
+  width: calc(100% + 14px); height: calc(100% + 6px);
+  border-bottom-color: currentColor;
+  border-left-color: currentColor;
+  transition: width 0.16s linear 0.32s, height 0.16s linear 0.48s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .nav a.active .idx { animation: none; }
+  .nav a.active .lbl::before,
+  .nav a.active .lbl::after { transition: none; }
 }
 
 /* Coloured sidebar (desktop): a solid panel in the section's primary colour,
@@ -648,7 +664,7 @@ body[data-mode^="toeic-"] .srs-cam { border-color: #bfe1d0; }
   .nav a { color: rgba(255, 255, 255, 0.85); }
   .nav a .idx { color: rgba(255, 255, 255, 0.55); }
   .nav a:hover { color: #fff; }
-  .nav a.active { color: #fff; border-color: #fff; }
+  .nav a.active { color: #fff; }
   .nav a.active .idx { color: #fff; }
 }
 

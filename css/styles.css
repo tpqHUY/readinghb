@@ -1948,7 +1948,10 @@ html.night { --high-mark: rgba(228, 178, 60, 0.5); }
 html.night body[data-mode="reading"]  { --accent:#2f9f90; --accent-deep:#6fcabb; --accent-soft:#12302c; --high-mark-2: rgba(47,159,144,0.24); }
 html.night body[data-mode="writing"]  { --accent:#8486dd; --accent-deep:#abadec; --accent-soft:#222449; --high-mark-2: rgba(132,134,221,0.24); }
 html.night body[data-mode="speaking"] { --accent:#c2693a; --accent-deep:#e2a079; --accent-soft:#36241a; --high-mark-2: rgba(194,105,58,0.26); }
-html.night body[data-mode^="toeic-"]  { --accent:#b0793f; --accent-deep:#d8b483; --accent-soft:#2c2216; --high-mark-2: rgba(176,121,63,0.26); }
+/* TOEIC keeps its choco-mint identity in the dark too: chocolate/caramel
+   accent + a dark MINT soft tint (not a brown tint), so the mint stays visible
+   on the sidebar, step dots, frames and tags. */
+html.night body[data-mode^="toeic-"]  { --accent:#b0793f; --accent-deep:#d8c2a2; --accent-soft:#173d32; --high-mark-2: rgba(176,121,63,0.26); }
 html.night body[data-mode="speaking"] .kbox,
 html.night body[data-mode^="toeic-"] .kbox,
 html.night body[data-mode="writing"] .kbox { border-color: var(--hair-strong); }

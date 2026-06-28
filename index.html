@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Band 8 Reading Casebook — IELTS Academic Reading</title>
+  <script>
+    /* apply the saved theme before first paint to avoid a flash of light */
+    (function () {
+      try {
+        var t = localStorage.getItem("band8-theme");
+        var dark = t ? t === "night" : matchMedia("(prefers-color-scheme: dark)").matches;
+        if (dark) document.documentElement.classList.add("night");
+      } catch (e) {}
+    })();
+  </script>
   <meta name="description" content="A field guide to IELTS Academic Reading: strategy per question type, the traps that cost you band 8, and the paraphrase patterns examiners hide answers behind." />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/logo.png" />
@@ -30,6 +40,7 @@
       <button class="mode-btn" role="tab" data-mode="toeic-wr" aria-selected="false" title="TOEIC Writing"><span class="m-full">TOEIC W</span><span class="m-abbr">TW</span></button>
     </div>
     <div class="topbar-right">
+      <button id="themeBtn" class="theme-btn" type="button" aria-label="Toggle night mode" title="Night mode">🌙</button>
       <button id="authBtn" class="auth-btn" type="button">Sign in</button>
     </div>
   </header>

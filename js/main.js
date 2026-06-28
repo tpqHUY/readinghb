@@ -668,6 +668,25 @@
     set(init);
   })();
 
+  /* ---------- night mode toggle (initial class set by head script) ---------- */
+  (function theme() {
+    const btn = $("#themeBtn");
+    if (!btn) return;
+    const root = document.documentElement;
+    function syncIcon() {
+      const night = root.classList.contains("night");
+      btn.textContent = night ? "☀️" : "🌙";
+      btn.setAttribute("title", night ? "Switch to day mode" : "Switch to night mode");
+      btn.setAttribute("aria-pressed", String(night));
+    }
+    syncIcon();
+    btn.addEventListener("click", function () {
+      const night = root.classList.toggle("night");
+      try { localStorage.setItem("band8-theme", night ? "night" : "day"); } catch (e) {}
+      syncIcon();
+    });
+  })();
+
   /* ---------- build case nav links ---------- */
   const navCases = $("#navCases");
   if (navCases && window.CASES) {

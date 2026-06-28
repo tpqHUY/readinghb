@@ -204,6 +204,21 @@ body::before {
 
 /* ---------- sign-in / sync button ---------- */
 .topbar-right { display: flex; align-items: center; gap: 0.7rem; }
+.theme-btn {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--hair-strong);
+  border-radius: 6px;
+  width: 34px; height: 34px;
+  flex: none;
+  display: grid; place-items: center;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn:active { transform: scale(0.92); }
 .auth-btn {
   appearance: none;
   background: var(--surface);
@@ -1890,4 +1905,63 @@ ul.traps li .ex {
   color: var(--text-soft);
   font-size: 0.94rem;
   margin: 0.3rem 0;
+}
+
+/* ============================================================
+   Night mode — toggled by `.night` on <html>. Dark neutrals
+   globally; each section's accent is re-tuned to a vivid mid-tone
+   that stays legible both as text on dark and behind white UI, with
+   a dark tinted `--accent-soft`. Most components inherit via vars.
+   ============================================================ */
+html.night {
+  --ground:      #14171a;
+  --surface:     #1b1f23;
+  --surface-2:   #262c31;
+  --text:        #e7eae8;
+  --text-soft:   #a6afaa;
+  --text-faint:  #757e78;
+  --hair:        #2b3236;
+  --hair-strong: #3b4348;
+  --trap:        #e1745c;
+  --trap-soft:   #3a241e;
+  --shadow:      0 1px 2px rgba(0,0,0,0.45), 0 12px 32px -16px rgba(0,0,0,0.75);
+}
+/* light dot-grain instead of the dark one */
+html.night body::before {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.035) 1px, transparent 0);
+}
+html.night .topbar { background: rgba(20, 23, 26, 0.82); }
+/* light hardcoded borders -> neutral dark hairline */
+html.night .kbox,
+html.night .srs-cam,
+html.night .srs-input,
+html.night .srs-qinput { border-color: var(--hair-strong); }
+html.night .kbox.warn .k,
+html.night .kbox.warn p { color: var(--trap); }
+html.night .srs-pct-num,
+html.night .srs-pct-lab { text-shadow: none; }
+/* keep the amber highlighter visible on dark */
+html.night { --high-mark: rgba(228, 178, 60, 0.5); }
+
+/* per-section dark accents (L≈0.2–0.27: readable as text on dark, white
+   text on the accent still ~3:1; accent-soft is a dark tint) */
+html.night body[data-mode="reading"]  { --accent:#2f9f90; --accent-deep:#6fcabb; --accent-soft:#12302c; --high-mark-2: rgba(47,159,144,0.24); }
+html.night body[data-mode="writing"]  { --accent:#8486dd; --accent-deep:#abadec; --accent-soft:#222449; --high-mark-2: rgba(132,134,221,0.24); }
+html.night body[data-mode="speaking"] { --accent:#c2693a; --accent-deep:#e2a079; --accent-soft:#36241a; --high-mark-2: rgba(194,105,58,0.26); }
+html.night body[data-mode^="toeic-"]  { --accent:#b0793f; --accent-deep:#d8b483; --accent-soft:#2c2216; --high-mark-2: rgba(176,121,63,0.26); }
+html.night body[data-mode="speaking"] .kbox,
+html.night body[data-mode^="toeic-"] .kbox,
+html.night body[data-mode="writing"] .kbox { border-color: var(--hair-strong); }
+
+/* dark sidebar: a dark tinted panel (not the bright accent fill) so the nav
+   text stays legible across every mode; active link + running border use the
+   accent colour. */
+@media (min-width: 901px) {
+  html.night .nav { background: var(--accent-soft); border: 1px solid var(--hair); }
+  html.night .nav-group-title { color: var(--text-faint); }
+  html.night .nav a { color: var(--text-soft); }
+  html.night .nav a .idx { color: var(--text-faint); }
+  html.night .nav a:hover { color: var(--text); }
+  html.night .nav a.active { color: var(--accent); }
+  html.night .nav a.active .idx { color: var(--accent); }
 }

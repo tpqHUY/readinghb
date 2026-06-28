@@ -216,16 +216,68 @@ body[data-mode="writing"] {            /* IELTS Writing — deep indigo (ink) */
   --accent-soft: #e4e4f3;
   --high-mark-2: rgba(61, 63, 146, 0.16);
 }
-body[data-mode="toeic-lc"],            /* TOEIC — plum */
-body[data-mode="toeic-rc"] {
+body[data-mode="writing"] .kbox { border-color: #c8c9ea; }
+body[data-mode="writing"] .srs-cam { border-color: #c8c9ea; }
+body[data-mode="writing"] .kbox.warn { border-color: #e6bcb1; }
+
+/* ============================================================
+   TOEIC — its own concept: a cooler, businesslike "answer-sheet
+   / operations" look vs the warm literary casebook of IELTS.
+   Plum accent · cool office paper · sans display · mono scores ·
+   OMR answer-bubble motif. All scoped to the TOEIC modes.
+   ============================================================ */
+body[data-mode^="toeic-"] {
   --accent: #8e3a6b;
   --accent-deep: #5f2647;
   --accent-soft: #f1e2ec;
   --high-mark-2: rgba(142, 58, 107, 0.16);
+  /* cooler, crisper paper than IELTS (#F0F1ED warm grey-green) */
+  --ground: #eceff4;
+  --surface: #fbfcfe;
+  --surface-2: #e6e9f0;
+  --hair: #d6dbe4;
+  --hair-strong: #bdc4d0;
 }
-body[data-mode="writing"] .kbox { border-color: #c8c9ea; }
-body[data-mode="writing"] .srs-cam { border-color: #c8c9ea; }
-body[data-mode="writing"] .kbox.warn { border-color: #e6bcb1; }
+/* businesslike sans display instead of the literary serif */
+body[data-mode^="toeic-"] .hero h1,
+body[data-mode^="toeic-"] .section-head h2,
+body[data-mode^="toeic-"] .case-title h3,
+body[data-mode^="toeic-"] .principle h4 {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+body[data-mode^="toeic-"] .hero h1 { line-height: 1.06; }
+body[data-mode^="toeic-"] .hero h1 em { font-style: normal; }
+/* scoreboard-style mono numbers */
+body[data-mode^="toeic-"] .timing .big { font-family: var(--mono); font-weight: 500; }
+/* part number as a filled OMR answer bubble */
+body[data-mode^="toeic-"] .case-no {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  color: var(--accent-deep);
+  line-height: 1;
+}
+
+/* OMR answer-bubble strip (TOEIC hero motif) */
+.omr { display: inline-flex; gap: 0.5rem; margin-top: 1.5rem; }
+.omr .bub {
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--hair-strong);
+  display: grid; place-items: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+.omr .bub.fill { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* ---------- Writing: criteria cards ---------- */
 .crit-grid {

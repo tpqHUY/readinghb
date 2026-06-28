@@ -140,12 +140,14 @@ body::before {
   transition: background-color 0.18s;
 }
 .brand strong { align-self: center; }
-/* "8BIT" wordmark — carries the current section's primary colour */
+/* "8bit" wordmark — Space Grotesk, lowercase, in the current section's primary */
 .brand strong {
+  font-family: "Space Grotesk", var(--sans);
+  text-transform: none;          /* override the uppercase on .brand */
   color: var(--accent);
   font-weight: 700;
-  font-size: 0.92rem;
-  letter-spacing: 0.2em;
+  font-size: 1.2rem;
+  letter-spacing: -0.005em;
   transition: color 0.18s;
 }
 .brand span { color: var(--text-faint); }

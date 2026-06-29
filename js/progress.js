@@ -1,38 +1,55 @@
 /* ============================================================
    progress.js — "mark as learned" tracking for TOEIC knowledge
-   cards (the Part / task strategy cards, not flashcards).
+   cards, at the TAB level (the smaller unit): each card's tabs
+   (Format / Types / Strategy / Traps, or Approach / Structure /
+   Pitfalls) is marked independently.
 
-   Each card gets a toggle in its header; state is stored in the
-   shared SRS map under a "tk:" id (no DOM flashcard), so it
-   persists locally AND rides on the existing cloud sync. Each
-   section shows an X / Y learned progress bar.
+   • a toggle at the foot of each tab panel
+   • a ✓ on a learned tab + an "X / N" badge on the card header
+   • a per-section progress bar counting tab-units
+   State lives in the shared SRS map under "tk:" ids (no DOM
+   flashcard) so it persists and rides on the existing cloud sync.
    ============================================================ */
 (function () {
   "use strict";
   if (!window.SRS || typeof window.SRS.mark !== "function") return;
 
   const PREFIX = "tk:";
-  // containers holding TOEIC knowledge cards (LC / RC parts, S&W tasks)
   const CONTAINERS = ["#toeicLcParts", "#toeicRcParts", "#tspTasks", "#twrTasks"];
 
-  const toggles = [];      // { btn, key, card }
-  const sections = [];     // { el, keys }
+  const units = [];     // { key, tab, btn }
+  const cards = [];     // { card, keys, badge }
+  const sections = [];  // { el, keys }
 
-  function keyFor(card) { return PREFIX + card.id; }
+  function has(k) { return window.SRS.has(k); }
 
-  function paint(card, btn, on) {
-    card.classList.toggle("is-learned", on);
-    btn.classList.toggle("done", on);
-    btn.setAttribute("aria-pressed", String(on));
-    const lab = btn.querySelector(".lt-label");
-    if (lab) lab.textContent = on ? "Learned" : "Mark learned";
-    btn.title = on ? "Studied — click to unmark" : "Mark this part as studied";
+  function paintUnit(u) {
+    const on = has(u.key);
+    u.tab.classList.toggle("tab-learned", on);
+    u.btn.classList.toggle("done", on);
+    u.btn.setAttribute("aria-pressed", String(on));
+    u.btn.querySelector(".lt-label").textContent = on ? "Learned" : "Mark this learned";
+    u.btn.title = on ? "Studied — click to unmark" : "Mark this section as studied";
   }
 
-  function refreshProgress() {
+  function refreshCards() {
+    cards.forEach(function (c) {
+      let done = 0;
+      c.keys.forEach(function (k) { if (has(k)) done++; });
+      const total = c.keys.length;
+      if (c.badge) {
+        c.badge.textContent = done + " / " + total + " learned";
+        c.badge.classList.toggle("complete", total > 0 && done === total);
+        c.badge.classList.toggle("started", done > 0 && done < total);
+      }
+      c.card.classList.toggle("is-learned", total > 0 && done === total);
+    });
+  }
+
+  function refreshSections() {
     sections.forEach(function (s) {
       let done = 0;
-      s.keys.forEach(function (k) { if (window.SRS.has(k)) done++; });
+      s.keys.forEach(function (k) { if (has(k)) done++; });
       const total = s.keys.length;
       const txt = s.el.querySelector(".lp-text");
       const bar = s.el.querySelector(".lp-bar > span");
@@ -42,44 +59,61 @@
     });
   }
 
-  function refreshAll() {
-    toggles.forEach(function (t) { paint(t.card, t.btn, window.SRS.has(t.key)); });
-    refreshProgress();
-  }
+  function refreshAll() { units.forEach(paintUnit); refreshCards(); refreshSections(); }
 
   function build() {
     CONTAINERS.forEach(function (sel) {
       const cont = document.querySelector(sel);
       if (!cont) return;
-      const cards = Array.prototype.slice.call(cont.querySelectorAll(":scope > .case"));
-      if (!cards.length) return;
-      const keys = [];
+      const sectionKeys = [];
 
-      cards.forEach(function (card) {
-        if (!card.id) return;
-        const key = keyFor(card);
-        keys.push(key);
-        const meta = card.querySelector(".case-meta");
-        if (!meta || meta.querySelector(".learn-toggle")) return;
+      Array.prototype.slice.call(cont.querySelectorAll(":scope > .case")).forEach(function (card) {
+        const tabs = Array.prototype.slice.call(card.querySelectorAll(".tabs .tab"));
+        const cardKeys = [];
 
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "learn-toggle";
-        btn.innerHTML = '<span class="lt-ic" aria-hidden="true"></span><span class="lt-label"></span>';
-        meta.appendChild(btn);
-        paint(card, btn, window.SRS.has(key));
+        tabs.forEach(function (tab) {
+          const target = tab.getAttribute("data-target");
+          const panel = target && (card.querySelector("#" + CSS.escape(target)) || document.getElementById(target));
+          if (!panel) return;
+          const key = PREFIX + target;          // panel ids are globally unique
+          cardKeys.push(key);
+          sectionKeys.push(key);
 
-        btn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          const next = !window.SRS.has(key);
-          window.SRS.mark(key, next);
-          paint(card, btn, next);
-          refreshProgress();
+          if (!panel.querySelector(":scope > .panel-learn")) {
+            const wrap = document.createElement("div");
+            wrap.className = "panel-learn";
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "learn-toggle";
+            btn.innerHTML = '<span class="lt-ic" aria-hidden="true"></span><span class="lt-label"></span>';
+            wrap.appendChild(btn);
+            panel.appendChild(wrap);
+
+            const u = { key: key, tab: tab, btn: btn };
+            units.push(u);
+            paintUnit(u);
+            btn.addEventListener("click", function (e) {
+              e.stopPropagation();
+              window.SRS.mark(key, !has(key));
+              paintUnit(u);
+              refreshCards();
+              refreshSections();
+            });
+          }
         });
-        toggles.push({ btn: btn, key: key, card: card });
+
+        // card header: a small "X / N learned" badge
+        const meta = card.querySelector(".case-meta");
+        let badge = meta && meta.querySelector(".card-progress");
+        if (meta && !badge) {
+          badge = document.createElement("span");
+          badge.className = "card-progress";
+          meta.appendChild(badge);
+        }
+        cards.push({ card: card, keys: cardKeys, badge: badge });
       });
 
-      // progress bar in the section header above this container
+      // per-section progress bar
       const section = cont.closest(".section");
       const head = section && section.querySelector(".section-head");
       if (head && !head.querySelector(".learn-progress")) {
@@ -87,11 +121,13 @@
         chip.className = "learn-progress";
         chip.innerHTML = '<span class="lp-bar"><span></span></span><span class="lp-text"></span>';
         head.appendChild(chip);
-        sections.push({ el: chip, keys: keys });
+        sections.push({ el: chip, keys: sectionKeys });
       }
     });
-    refreshProgress();
-    window.SRS.subscribe(refreshAll);   // re-sync markers on remote updates
+
+    refreshCards();
+    refreshSections();
+    window.SRS.subscribe(refreshAll);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);

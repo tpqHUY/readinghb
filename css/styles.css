@@ -2061,3 +2061,31 @@ html.night body[data-mode="writing"] .kbox { border-color: var(--hair-strong); }
   transition: width 0.35s ease;
 }
 .learn-progress.complete .lp-text { color: var(--accent); }
+
+/* ---- tab-level "learned" units (TOEIC cards) ---- */
+.panel-learn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.3rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--hair);
+}
+.tab.tab-learned::after {
+  content: "✓";
+  margin-left: 0.4em;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85em;
+}
+.card-progress {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 0.2rem;
+  white-space: nowrap;
+}
+.card-progress.started { color: var(--text-soft); }
+.card-progress.complete { color: var(--accent); }
+.card-progress.complete::before { content: "✓ "; font-weight: 700; }
